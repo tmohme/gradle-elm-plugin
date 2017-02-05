@@ -2,14 +2,14 @@ plugins {
   id 'groovy'
   id 'java-gradle-plugin'
   id 'maven-publish'
+  id "com.gradle.plugin-publish" version "0.9.7"
 }
 
 group 'org.mohme.gradle'
 version '0.1.0-SNAPSHOT'
 
 repositories {
-  mavenLocal()
-  mavenCentral()
+  jcenter()
 }
 
 gradlePlugin {
@@ -42,5 +42,20 @@ publishing {
 uploadArchives {
   repositories {
     mavenLocal()
+  }
+}
+
+
+pluginBundle {
+  website = 'https://github.com/tmohme/gradle-elm-plugin'
+  vcsUrl = 'https://github.com/tmohme/gradle-elm-plugin'
+  description = 'A gradle plugin for convenient use of elm.'
+  tags = ['elm', 'elm-make']
+
+  plugins {
+    greetingsPlugin {
+      id = 'org.mohme.gradle.elm-plugin'
+      displayName = 'Gradle Elm plugin'
+    }
   }
 }

@@ -18,7 +18,7 @@ class ElmMakeTask extends DefaultTask {
   String buildDir = "${project.buildDir.path}/elm"
   @Input String targetModule = 'elm.js'
   @Input boolean confirm = true
-  @Input boolean debug = true
+  @Input boolean debug = false
 
   @InputDirectory
   private getSourceDir() {
@@ -28,6 +28,11 @@ class ElmMakeTask extends DefaultTask {
   @OutputDirectory
   private getBuildDir() {
     project.file(buildDir)
+  }
+
+  ElmMakeTask() {
+    group 'Build'
+    description 'Run `elm-make`.'
   }
 
   @TaskAction
