@@ -50,9 +50,10 @@ class BuildLogicFunctionalTest extends Specification {
       }
       
       elmMake {
-        sourceDir = file("src/main/elm")
+        executable = '/usr/local/bin/elm-make'
+        sourceDir = 'src/main/elm'
         executionDir = '${testProjectDir.root.canonicalPath}'
-        buildDir = file("\${project.buildDir.path}/elm")
+        buildDir = "\${project.buildDir.path}/elm"
       }
     """.stripIndent()
 

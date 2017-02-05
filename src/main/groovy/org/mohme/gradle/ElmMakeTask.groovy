@@ -11,20 +11,30 @@ import org.gradle.api.tasks.TaskAction
 class ElmMakeTask extends DefaultTask {
   private Logger logger
 
-  @Input String executable = "/usr/local/bin/elm-make"
+  @Input String executable = "elm-make"
   @Input String executionDir = "."
-  @InputDirectory File sourceDir
-  @Input String mainModule = "Main.elm"
-  @OutputDirectory File buildDir
-  @Input String targetModule = "elm.js"
+  String sourceDir = 'src/elm'
+  @Input String mainModule = 'Main.elm'
+  String buildDir = "${project.buildDir.path}/elm"
+  @Input String targetModule = 'elm.js'
   @Input boolean confirm = true
   @Input boolean debug = true
+
+  @InputDirectory
+  private getSourceDir() {
+    project.file(sourceDir)
+  }
+
+  @OutputDirectory
+  private getBuildDir() {
+    project.file(buildDir)
+  }
 
   @TaskAction
   make() {
     logger = project.logger
 
-    String[] elmMakeCmd = [executable, "${sourceDir.path}/${mainModule}", "--output", "${buildDir.path}/${targetModule}"]
+    String[] elmMakeCmd = [executable, "${getSourceDir().path}/${mainModule}", "--output", "${getBuildDir().path}/${targetModule}"]
     if (confirm) {
       elmMakeCmd += '--yes'
     }

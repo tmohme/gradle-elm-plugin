@@ -7,7 +7,7 @@ class ElmPlugin implements Plugin<Project> {
 
   @Override
   void apply(Project project) {
-    project.tasks.create("elmMake", ElmMakeTask)
+    project.tasks.create('elmMake', ElmMakeTask)
   }
 
 }
