@@ -1,0 +1,46 @@
+plugins {
+  id 'groovy'
+  id 'java-gradle-plugin'
+  id 'maven-publish'
+}
+
+group 'org.mohme.gradle'
+version '0.1.0-SNAPSHOT'
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+}
+
+gradlePlugin {
+  plugins {
+    elmPlugin {
+      id = "org.mohme.gradle.elm-plugin"
+      implementationClass = "org.mohme.gradle.ElmPlugin"
+    }
+  }
+}
+
+dependencies {
+  testCompile gradleTestKit()
+  testCompile('org.spockframework:spock-core:1.0-groovy-2.4') {
+    exclude module: 'groovy-all'
+  }
+}
+
+publishing {
+  publications {
+    maven(MavenPublication) {
+      groupId "$group"
+      artifactId 'elm-plugin'
+      version "$version"
+      from components.java
+    }
+  }
+}
+
+uploadArchives {
+  repositories {
+    mavenLocal()
+  }
+}
