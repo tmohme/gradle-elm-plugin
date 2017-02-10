@@ -3,3 +3,7 @@ language: groovy
 
 install:
   - npm install elm
+
+script:
+  - ./gradlew assemble
+  - ./gradlew check -i
