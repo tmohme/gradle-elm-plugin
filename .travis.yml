@@ -12,7 +12,7 @@ before_script:
   - find . -iname "elm-make"
   - ls -al "node_modules/.bin"
   - export ELM_EXECUTABLE="node_modules/.bin/elm-make"
-  - $ELM_EXECUTABLE
+  - $ELM_EXECUTABLE -y
 
 script:
   - ./gradlew assemble
