@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/tmohme/gradle-elm-plugin.svg?branch=master)](https://travis-ci.org/tmohme/gradle-elm-plugin)
+
 # gradle-elm-plugin
 A gradle plugin for convenient use of elm.
 
