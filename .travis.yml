@@ -11,8 +11,7 @@ cache:
     - node_modules
 
 env:
-  - NODE_VERSION=4.0
-  - ELM_VERSION=0.18.0
+  - NODE_VERSION=4.0 ELM_VERSION=0.18.0
 
 install:
   - nvm install $NODE_VERSION
