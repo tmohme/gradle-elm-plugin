@@ -10,7 +10,7 @@ install:
 
 before_script:
   - find . -iname "elm-make"
-  - export ELM_EXECUTABLE=~/node_modules/.bin/elm-make
+  - export ELM_EXECUTABLE=node_modules/.bin/elm-make
 
 script:
   - ./gradlew assemble
