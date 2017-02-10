@@ -18,13 +18,9 @@ install:
   - nvm use $NODE_VERSION
   - node --version
   - npm --version
-  - npm install -g elm-use elm-test
+  - npm install -g elm-use
   - elm-use $ELM_VERSION
   - chmod +x $(npm config get prefix)/bin/elm-make
-
-before_script:
-  - pwd
-  - elm-make --yes
 
 script:
   - ./gradlew assemble

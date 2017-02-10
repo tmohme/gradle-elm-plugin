@@ -44,14 +44,13 @@ class BuildLogicFunctionalTest extends Specification {
 
   def "run elmMake successfully"() {
     given:
-    def elmExecutable = ("${System.env.ELM_EXECUTABLE}" != 'null') ? System.env.ELM_EXECUTABLE : 'elm-make'
     buildFile << """\
       plugins {
         id 'org.mohme.gradle.elm-plugin'
       }
       
       elmMake {
-        executable = '${elmExecutable}'
+        executable = 'elm-make'
         sourceDir = 'src/main/elm'
         executionDir = '${testProjectDir.root.canonicalPath}'
         buildDir = "\${project.buildDir.path}/elm"
