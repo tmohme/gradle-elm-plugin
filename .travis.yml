@@ -1,10 +1,15 @@
 
 language: groovy
+cache:
+  directories:
+  - $HOME/.gradle
+  - node_modules
 
 install:
   - npm install elm
 
 before_script:
+  - find . -iname "elm-make"
   - export ELM_EXECUTABLE=~/node_modules/.bin/elm-make
 
 script:
