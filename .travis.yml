@@ -1,18 +1,24 @@
 
 language: groovy
+
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+
 cache:
   directories:
-  - $HOME/.gradle
-  - node_modules
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - node_modules
 
 install:
   - npm install elm
 
 before_script:
-  - find . -iname "elm-make"
+  - pwd
   - ls -al "node_modules/.bin"
-  - export ELM_EXECUTABLE="node_modules/.bin/elm-make"
-  - $ELM_EXECUTABLE --yes
+
+env:
+  - ELM_EXECUTABLE="node_modules/.bin/elm-make"
 
 script:
   - ./gradlew assemble
