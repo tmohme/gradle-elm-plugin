@@ -10,15 +10,22 @@ cache:
     - $HOME/.gradle/wrapper/
     - node_modules
 
+env:
+  - NODE_VERSION=4.0
+  - ELM_VERSION=0.18.0
+
 install:
-  - npm install elm
+  - nvm install $TARGET_NODE_VERSION
+  - nvm use $TARGET_NODE_VERSION
+  - node --version
+  - npm --version
+  - npm install -g elm-use elm-test
+  - elm-use $ELM_VERSION
+  - chmod +x $(npm config get prefix)/bin/elm-make
 
 before_script:
   - pwd
-  - ls -al "node_modules/.bin"
-
-env:
-  - ELM_EXECUTABLE="node_modules/.bin/elm-make"
+  - elm-make --yes
 
 script:
   - ./gradlew assemble
