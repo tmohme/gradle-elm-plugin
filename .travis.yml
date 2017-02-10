@@ -1,0 +1,5 @@
+
+language: groovy
+
+install:
+  - npm install elm
