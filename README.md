@@ -6,6 +6,7 @@ A gradle plugin for convenient use of elm.
 This plugin requires a working installation of the elm-platform in version 0.18.  
 Other versions might also work, but are not tested.
 
+
 ## Usage
 Apply the plugin using standard Gradle procedure:
 
@@ -22,30 +23,23 @@ It *does not* make any other task depend on `elmMake`, thus you might want to ad
 
 Configurable properties of the task:
 
-* `executable`  
-  The name of the executable to use.  
-  Defaults to "elm-make".
-* `executionDir`  
-  The working directory for the execution of elm-make.  
-  Defaults to ".".
-* `sourceDir`  
-  The directory in/below which the elm source files are contained.  
-  Defaults to 'src/elm'.
-* `mainModule`  
-  The name of the main module to give to elm-make.
-  Defaults to 'Main.elm'.
-* `buildDir`  
-  The director in which we place the output. 
-  Defaults to "${project.buildDir.path}/elm"
-* `targetModule`  
-  The ouput file to produce.
-  Defaults to 'elm.js'
-* `confirm`  
-  Determines whether 'elm-make' actions will automatically get confirmed, or not.  
-  Defaults to `true`.
-* `debug`
-  Determines whether 'elm-make' will run with the the `--debug`-flag.  
-  Defaults to `true`.
+| Name           | default                        | description |
+| -------------- | ------------------------------ | ----------- |
+| `buildDir`     | `${project.buildDir.path}/elm` | The director in which we place the output. |
+| `confirm`      | `true`                         | Determines whether 'elm-make' actions will automatically get confirmed, or not. Translates to the `--yes`-flag. |
+| `debug`        | `true`                         | Determines whether 'elm-make' will run with the the `--debug`-flag. | 
+| `executable`   | `elm-make`                     | The name of the executable to use. |
+| `executionDir` | `.`                            | The working directory for the execution of elm-make. |
+| `mainModule`   | `Main.elm`                     | The name of the main module to give to elm-make. |
+| `sourceDir`    | `src/elm`                      | The directory in/below which the elm source files are contained. |
+| `targetModule` | `elm.js`                       | The output file to produce. |
+
+
+## Known problems
+Running `elm-make`  might be [incredibly slow](https://github.com/elm-lang/elm-compiler/issues/1473) on some CI-platforms.  
+This is not a problem of this plugin, but kind of a misunderstanding between `elm-make` and what the underlying platform
+tells `elm-make` about its capabilities.  
+Workarounds are described in the linked discussion and e.g. in [this elm-discuss thread](https://groups.google.com/forum/#!topic/elm-discuss/Y3bTYRPqBXE).  
 
 
 ## License
