@@ -19,6 +19,7 @@ class ElmMakeTask extends DefaultTask {
   @Input String targetModule = 'elm.js'
   @Input boolean confirm = true
   @Input boolean debug = false
+  @Input boolean warn = false
 
   @InputDirectory
   private getSourceDir() {
@@ -45,6 +46,9 @@ class ElmMakeTask extends DefaultTask {
     }
     if (debug) {
       elmMakeCmd += '--debug'
+    }
+    if (warn) {
+      elmMakeCmd += '--warn'
     }
 
     elmMake(elmMakeCmd)

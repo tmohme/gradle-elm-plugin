@@ -25,15 +25,15 @@ Configurable properties of the task:
 
 | Name           | default                        | description |
 | -------------- | ------------------------------ | ----------- |
-| `buildDir`     | `${project.buildDir.path}/elm` | The director in which we place the output. |
-| `confirm`      | `true`                         | Determines whether 'elm-make' actions will automatically get confirmed, or not. Translates to the `--yes`-flag. |
-| `debug`        | `true`                         | Determines whether 'elm-make' will run with the the `--debug`-flag. | 
+| `buildDir`     | `${project.buildDir.path}/elm` | The name of the directory in which we place the output. |
+| `confirm`      | `true`                         | Determines whether `elm-make` actions will automatically get confirmed, or not. Translates to the `--yes`-flag. |
+| `debug`        | `true`                         | Determines whether `elm-make` will run with the the `--debug`-flag. | 
 | `executable`   | `elm-make`                     | The name of the executable to use. |
-| `executionDir` | `.`                            | The working directory for the execution of elm-make. |
+| `executionDir` | `.`                            | The name of the working directory for the execution of `elm-make`. |
 | `mainModule`   | `Main.elm`                     | The name of the main module to give to elm-make. |
-| `sourceDir`    | `src/elm`                      | The directory in/below which the elm source files are contained. |
-| `targetModule` | `elm.js`                       | The output file to produce. |
-
+| `sourceDir`    | `src/elm`                      | The name of the directory in/below which the elm source files are contained. |
+| `targetModule` | `elm.js`                       | The name of the output file to produce. |
+| `warn`         | `false`                        | Determines whether `elm-make` will run with the `--warn`-flag. <br/> **Attention:** Warnings will break the build!|
 
 ## Known problems
 Running `elm-make`  might be [incredibly slow](https://github.com/elm-lang/elm-compiler/issues/1473) on some CI-platforms.  

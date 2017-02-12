@@ -76,6 +76,40 @@ class BuildLogicFunctionalTest extends Specification {
 
     def elmJs = testProjectDir.root.path + '/build/elm/elm.js'
     new File(elmJs).exists()
+  }
 
+
+  def "warnings break the build"() {
+    given:
+    buildFile << """\
+      plugins {
+        id 'org.mohme.gradle.elm-plugin'
+      }
+      
+      elmMake {
+        executable = 'elm-make'
+        sourceDir = 'src/main/elm'
+        executionDir = '${testProjectDir.root.canonicalPath}'
+        buildDir = "\${project.buildDir.path}/elm"
+        warn = true
+      }
+    """.stripIndent()
+
+    mainFile << """\
+      import Html 
+      main = Html.text "hello, world!"
+    """.stripIndent()
+
+    when:
+    def result = GradleRunner.create()
+            .withProjectDir(testProjectDir.root)
+            .withArguments('elmMake', '--stacktrace', '--info')
+            .withPluginClasspath()
+            .withDebug(true)
+            .buildAndFail()
+
+    then:
+    result.output.contains(":elmMake")
+    result.task(":elmMake").outcome == TaskOutcome.FAILED
   }
 }
