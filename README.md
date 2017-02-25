@@ -35,6 +35,9 @@ Configurable properties of the task:
 | `targetModule` | `elm.js`                       | The name of the output file to produce. |
 | `warn`         | `false`                        | Determines whether `elm-make` will run with the `--warn`-flag. <br/> **Attention:** Warnings will break the build!|
 
+## Compatibility
+The plugin is tested with elm 0.18 and Gradle [3.3, 3.4].
+
 ## Known problems
 Running `elm-make`  might be [incredibly slow](https://github.com/elm-lang/elm-compiler/issues/1473) on some CI-platforms.  
 This is not a problem of this plugin, but kind of a misunderstanding between `elm-make` and what the underlying platform
