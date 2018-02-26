@@ -48,17 +48,17 @@ class BuildLogicFunctionalTest extends Specification {
       plugins {
         id 'org.mohme.gradle.elm-plugin'
       }
-      
+
       elmMake {
         executable = 'elm-make'
-        sourceDir = 'src/main/elm'
+        sourceDir = file('src/main/elm')
         executionDir = '${testProjectDir.root.canonicalPath}'
-        buildDir = "\${project.buildDir.path}/elm"
+        buildDir = file("\${project.buildDir.path}/elm")
       }
     """.stripIndent()
 
     mainFile << """\
-      import Html 
+      import Html
       main = Html.text "hello, world!"
     """.stripIndent()
 
@@ -85,18 +85,18 @@ class BuildLogicFunctionalTest extends Specification {
       plugins {
         id 'org.mohme.gradle.elm-plugin'
       }
-      
+
       elmMake {
         executable = 'elm-make'
-        sourceDir = 'src/main/elm'
+        sourceDir = file('src/main/elm')
         executionDir = '${testProjectDir.root.canonicalPath}'
-        buildDir = "\${project.buildDir.path}/elm"
+        buildDir = file("\${project.buildDir.path}/elm")
         warn = true
       }
     """.stripIndent()
 
     mainFile << """\
-      import Html 
+      import Html
       main = Html.text "hello, world!"
     """.stripIndent()
 
