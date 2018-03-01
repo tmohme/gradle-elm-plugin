@@ -2,10 +2,7 @@ package org.mohme.gradle
 
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
