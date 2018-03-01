@@ -5,20 +5,33 @@ import org.gradle.testkit.runner.TaskOutcome
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 class BuildLogicFunctionalTest extends Specification {
-  @Rule
-  final TemporaryFolder testProjectDir = new TemporaryFolder()
+
+  final File testProjectDir = Files.createTempDirectory("testProjectDir").toFile();
   File buildFile
   File mainFile
 
   def setup() {
-    buildFile = testProjectDir.newFile('build.gradle')
+    buildFile = new File(testProjectDir, 'build.gradle')
+    buildFile.createNewFile();
 
-    testProjectDir.newFolder('src', 'main', 'elm')
-    mainFile = testProjectDir.newFile('src/main/elm/Main.elm')
+    Paths.get(testProjectDir.getAbsolutePath(), 'src', 'main', 'elm').toFile().mkdirs();
+    mainFile = new File(testProjectDir, 'src/main/elm/Main.elm')
+    mainFile.createNewFile();
 
-    testProjectDir.newFolder('build', 'elm')
+    Paths.get(testProjectDir.getAbsolutePath(), 'build', 'elm').toFile().mkdirs();
+  }
+
+  /**
+   * Replace escape all '\' characters with '\\'
+   * @return Properly escaped string.
+   */
+  private String fixPath() {
+    return testProjectDir.getAbsolutePath().replaceAll("[\\\\]", "\\\\\\\\")
   }
 
 
@@ -32,7 +45,7 @@ class BuildLogicFunctionalTest extends Specification {
 
     when:
     def result = GradleRunner.create()
-            .withProjectDir(testProjectDir.root)
+            .withProjectDir(testProjectDir)
             .withArguments('tasks', '--all')
             .withPluginClasspath()
             .build()
@@ -52,7 +65,7 @@ class BuildLogicFunctionalTest extends Specification {
       elmMake {
         executable = 'elm-make'
         sourceDir = file('src/main/elm')
-        executionDir = '${testProjectDir.root.canonicalPath}'
+        executionDir = new File('""" + fixPath() + """')
         buildDir = file("\${project.buildDir.path}/elm")
       }
     """.stripIndent()
@@ -64,7 +77,7 @@ class BuildLogicFunctionalTest extends Specification {
 
     when:
     def result = GradleRunner.create()
-            .withProjectDir(testProjectDir.root)
+            .withProjectDir(testProjectDir)
             .withArguments('elmMake', '--stacktrace', '--info')
             .withPluginClasspath()
             .withDebug(true)
@@ -74,7 +87,7 @@ class BuildLogicFunctionalTest extends Specification {
     result.output.contains(":elmMake")
     result.task(":elmMake").outcome == TaskOutcome.SUCCESS
 
-    def elmJs = testProjectDir.root.path + '/build/elm/elm.js'
+    def elmJs = testProjectDir.path + '/build/elm/elm.js'
     new File(elmJs).exists()
   }
 
@@ -89,7 +102,7 @@ class BuildLogicFunctionalTest extends Specification {
       elmMake {
         executable = 'elm-make'
         sourceDir = file('src/main/elm')
-        executionDir = '${testProjectDir.root.canonicalPath}'
+        executionDir = new File('""" + fixPath() + """')
         buildDir = file("\${project.buildDir.path}/elm")
         warn = true
       }
@@ -102,7 +115,7 @@ class BuildLogicFunctionalTest extends Specification {
 
     when:
     def result = GradleRunner.create()
-            .withProjectDir(testProjectDir.root)
+            .withProjectDir(testProjectDir)
             .withArguments('elmMake', '--stacktrace', '--info')
             .withPluginClasspath()
             .withDebug(true)

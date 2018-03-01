@@ -3,21 +3,18 @@ package org.mohme.gradle
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.logging.Logger
-import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
-import java.io.File;
-import java.nio.file.Paths;
+import java.nio.file.Paths
 
-@CacheableTask
 class ElmMakeTask extends DefaultTask {
     private Logger logger
 
     @Input String executable = "elm-make"
-    @Input String executionDir = "."
-    File sourceDir = Paths.get("src", "elm").toFile();
+    @Input File executionDir = new File(".")
+    File sourceDir = Paths.get("src", "elm").toFile()
     @Input String mainModule = 'Main.elm'
     File buildDir = new File("${project.buildDir.path}", "elm")
     @Input String targetModule = 'elm.js'
@@ -44,8 +41,15 @@ class ElmMakeTask extends DefaultTask {
     make() {
         logger = project.logger
 
-        String[] elmMakeCmd = [executable, Paths.get(getSourceDir().path, mainModule).toString(),
-           "--output", Paths.get(getBuildDir().path, targetModule).toString()]
+        String[] elmMakeCmd
+        if (System.getProperty("os.name").startsWith("Windows")) {
+        	elmMakeCmd = ["cmd", "/c", executable, Paths.get(getSourceDir().path, mainModule).toString(),
+                            "--output", Paths.get(getBuildDir().path, targetModule).toString()]
+           logger.info("Adding windows specific command string")
+        } else {
+            elmMakeCmd = [executable, Paths.get(getSourceDir().path, mainModule).toString(),
+                          "--output", Paths.get(getBuildDir().path, targetModule).toString()]
+        }
         if (confirm) {
             elmMakeCmd += '--yes'
         }
@@ -65,7 +69,7 @@ class ElmMakeTask extends DefaultTask {
         Process process
         try {
             process= new ProcessBuilder(makeCmd)
-            .directory(project.file(executionDir))
+            .directory(executionDir)
             .start()
         } catch (IOException e) {
             String msg = String.format("failed to execute '%s'", Arrays.toString(makeCmd))
