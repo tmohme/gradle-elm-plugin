@@ -2,8 +2,8 @@ plugins {
   id 'groovy'
   id 'java-gradle-plugin'
   id 'maven-publish'
-  id 'net.researchgate.release' version '2.5.0'
-  id "com.gradle.plugin-publish" version "0.9.7"
+  id 'net.researchgate.release' version '2.6.0'
+  id 'com.gradle.plugin-publish' version '0.9.10'
 }
 
 group 'org.mohme.gradle'
@@ -23,7 +23,7 @@ gradlePlugin {
 
 dependencies {
   testCompile gradleTestKit()
-  testCompile('org.spockframework:spock-core:1.0-groovy-2.4') {
+  testCompile('org.spockframework:spock-core:1.1-groovy-2.4') {
     exclude module: 'groovy-all'
   }
 }

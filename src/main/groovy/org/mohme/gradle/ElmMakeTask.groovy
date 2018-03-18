@@ -17,8 +17,8 @@ class ElmMakeTask extends DefaultTask {
 
   @Input String executable = "elm-make"
   @Input String executionDir = "."
-  @Input String mainModule = 'Main.elm'
-  @Input String targetModule = 'elm.js'
+  @Input String mainModuleName = 'Main.elm'
+  @Input String targetModuleName = 'elm.js'
   @Input boolean confirm = true
   @Input boolean debug = false
   @Input boolean warn = false
@@ -54,9 +54,9 @@ class ElmMakeTask extends DefaultTask {
     String[] osSpecificPrefix = (osName.startsWith('Windows')) ? ['cmd', '/c'] : []
     String[] elmMakeCmd = osSpecificPrefix +
                           [executable,
-                           Paths.get(getSourceDir().path, mainModule).toString(),
+                           Paths.get(getSourceDir().path, mainModuleName).toString(),
                            "--output",
-                           Paths.get(getBuildDir().path, targetModule).toString()]
+                           Paths.get(getBuildDir().path, targetModuleName).toString()]
     if (confirm) {
       elmMakeCmd += '--yes'
     }
