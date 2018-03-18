@@ -23,17 +23,17 @@ It *does not* make any other task depend on `elmMake`, thus you might want to ad
 
 Configurable properties of the task:
 
-| Name           | default                        | description |
-| -------------- | ------------------------------ | ----------- |
-| `buildDir`     | `${project.buildDir.path}/elm` | The name of the directory in which we place the output. |
-| `confirm`      | `true`                         | Determines whether `elm-make` actions will automatically get confirmed, or not. Translates to the `--yes`-flag. |
-| `debug`        | `true`                         | Determines whether `elm-make` will run with the the `--debug`-flag. | 
-| `executable`   | `elm-make`                     | The name of the executable to use. |
-| `executionDir` | `.`                            | The name of the working directory for the execution of `elm-make`. |
-| `mainModule`   | `Main.elm`                     | The name of the main module to give to elm-make. |
-| `sourceDir`    | `src/elm`                      | The name of the directory in/below which the elm source files are contained. |
-| `targetModule` | `elm.js`                       | The name of the output file to produce. |
-| `warn`         | `false`                        | Determines whether `elm-make` will run with the `--warn`-flag. <br/> **Attention:** Warnings will break the build!|
+| Name           | default                        | type    | description |
+| -------------- | ------------------------------ | ------- | ----------- |
+| `buildDir`     | `${project.buildDir.path}/elm` | File    | The name of the directory in which we place the output. |
+| `confirm`      | `true`                         | boolean | Determines whether `elm-make` actions will automatically get confirmed, or not. Translates to the `--yes`-flag. |
+| `debug`        | `true`                         | boolean | Determines whether `elm-make` will run with the the `--debug`-flag. | 
+| `executable`   | `elm-make`                     | String  | The name of the executable to use. |
+| `executionDir` | `.`                            | File    | The name of the working directory for the execution of `elm-make`. |
+| `mainModule`   | `Main.elm`                     | String  | The name of the main module to give to elm-make. |
+| `sourceDir`    | `src/elm`                      | File    | The name of the directory in/below which the elm source files are contained. |
+| `targetModule` | `elm.js`                       | String  | The name of the output file to produce. |
+| `warn`         | `false`                        | boolean | Determines whether `elm-make` will run with the `--warn`-flag. <br/> **Attention:** Warnings will break the build!|
 
 ## Compatibility
 The plugin is tested with elm 0.18 and Gradle [3.3, 4.6].

@@ -1,5 +1,6 @@
 package org.mohme.gradle
 
+import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.logging.Logger
@@ -8,39 +9,54 @@ import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
+import java.nio.file.Paths
+
+@CompileStatic
 class ElmMakeTask extends DefaultTask {
   private Logger logger
 
   @Input String executable = "elm-make"
   @Input String executionDir = "."
-  String sourceDir = 'src/elm'
   @Input String mainModule = 'Main.elm'
-  String buildDir = "${project.buildDir.path}/elm"
   @Input String targetModule = 'elm.js'
   @Input boolean confirm = true
   @Input boolean debug = false
   @Input boolean warn = false
 
+  private File sourceDir = Paths.get('src', 'elm').toFile()
   @InputDirectory
-  private getSourceDir() {
-    project.file(sourceDir)
+  File getSourceDir() {
+    sourceDir
+  }
+  void setSourceDir(File sourceDir) {
+    this.sourceDir = sourceDir
   }
 
+  private File buildDir = Paths.get("${project.buildDir.path}", 'elm').toFile()
   @OutputDirectory
-  private getBuildDir() {
-    project.file(buildDir)
+  File getBuildDir() {
+    buildDir
+  }
+  void setBuildDir(File buildDir) {
+    this.buildDir = buildDir
   }
 
   ElmMakeTask() {
-    group 'Build'
-    description 'Run `elm-make`.'
+    setGroup('Build')
+    setDescription('Run `elm-make`.')
   }
 
   @TaskAction
   make() {
     logger = project.logger
 
-    String[] elmMakeCmd = [executable, "${getSourceDir().path}/${mainModule}", "--output", "${getBuildDir().path}/${targetModule}"]
+    final osName = ((String)System.properties['os.name'])
+    String[] osSpecificPrefix = (osName.startsWith('Windows')) ? ['cmd', '/c'] : []
+    String[] elmMakeCmd = osSpecificPrefix +
+                          [executable,
+                           Paths.get(getSourceDir().path, mainModule).toString(),
+                           "--output",
+                           Paths.get(getBuildDir().path, targetModule).toString()]
     if (confirm) {
       elmMakeCmd += '--yes'
     }

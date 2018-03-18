@@ -45,15 +45,17 @@ class BuildLogicFunctionalTest extends Specification {
   def "run elmMake successfully"() {
     given:
     buildFile << """\
+      import java.nio.file.Paths
+      
       plugins {
         id 'org.mohme.gradle.elm-plugin'
       }
       
       elmMake {
         executable = 'elm-make'
-        sourceDir = 'src/main/elm'
+        sourceDir = Paths.get('src', 'main', 'elm').toFile()
         executionDir = '${testProjectDir.root.canonicalPath}'
-        buildDir = "\${project.buildDir.path}/elm"
+        buildDir = Paths.get("\${project.buildDir.path}", 'elm').toFile()
       }
     """.stripIndent()
 
@@ -82,15 +84,17 @@ class BuildLogicFunctionalTest extends Specification {
   def "warnings break the build"() {
     given:
     buildFile << """\
+      import java.nio.file.Paths
+      
       plugins {
         id 'org.mohme.gradle.elm-plugin'
       }
       
       elmMake {
         executable = 'elm-make'
-        sourceDir = 'src/main/elm'
+        sourceDir = Paths.get('src', 'main', 'elm').toFile()
         executionDir = '${testProjectDir.root.canonicalPath}'
-        buildDir = "\${project.buildDir.path}/elm"
+        buildDir = Paths.get("\${project.buildDir.path}", 'elm').toFile()
         warn = true
       }
     """.stripIndent()
