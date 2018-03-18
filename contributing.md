@@ -7,6 +7,7 @@ Before you invest your time in this project, please read the rules below.
   Of course you can configure git locally to use your platform's native line endings, but please ensure that what ends 
   up in the repository has 'LF' line-endings.
 * Create your a new branch for your pull request.
+* Don't put multiple unrelated changes into one contribution.
 
 ## Code Style
 Don't reformat the code.
