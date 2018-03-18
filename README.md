@@ -44,6 +44,9 @@ This is not a problem of this plugin, but kind of a misunderstanding between `el
 tells `elm-make` about its capabilities.  
 Workarounds are described in the linked discussion and e.g. in [this elm-discuss thread](https://groups.google.com/forum/#!topic/elm-discuss/Y3bTYRPqBXE).  
 
+## Contribution
+I'm happy about contributions of all sorts.  
+Before you actually do work on the project, please read the [contribution guide](contribution.md).
 
 ## License
 This plugin is made available under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0).
