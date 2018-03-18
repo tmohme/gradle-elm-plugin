@@ -1,6 +1,6 @@
 # Contributing to this project
 
-Befor you invest your time in this project, please read the rules below.
+Before you invest your time in this project, please read the rules below.
 
 ## Git
 * Please adhere to the git convention of storing line-endings as 'LF' in git.  
@@ -21,4 +21,4 @@ I won't debug your code.
   
 ## License
 You accept that any contribution you make - when being used in this project - will be made available under the license 
-of the project (see [README](README.md))
+of the project (see the `README.md`)

@@ -46,7 +46,7 @@ Workarounds are described in the linked discussion and e.g. in [this elm-discuss
 
 ## Contribution
 I'm happy about contributions of all sorts.  
-Before you actually do work on the project, please read the [contribution guide](contribution.md).
+Before you actually do work on the project, please read the contribution guide (`contributing.md`).
 
 ## License
 This plugin is made available under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0).
