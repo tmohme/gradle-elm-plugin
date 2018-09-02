@@ -12,7 +12,7 @@ cache:
     - sysconfcpus
 
 env:
-  - NODE_VERSION=4.0 ELM_VERSION=0.18.0
+  - NODE_VERSION=4.0 ELM_VERSION=0.19.0
 
 before_install:
   - | # epic build time improvement - see https://github.com/elm-lang/elm-compiler/issues/1473#issuecomment-245704142
@@ -32,9 +32,9 @@ install:
   - npm --version
   - npm install -g elm-use
   - elm-use $ELM_VERSION
-  - mv $(npm config get prefix)/bin/elm-make $(npm config get prefix)/bin/elm-make-original
-  - printf "#\041/bin/bash\n\necho \"Running elm-make with sysconfcpus -n 2\"\n\n$TRAVIS_BUILD_DIR/sysconfcpus/bin/sysconfcpus -n 2 elm-make-original \"\$@\"" > $(npm config get prefix)/bin/elm-make
-  - chmod +x $(npm config get prefix)/bin/elm-make
+  - mv $(npm config get prefix)/bin/elm $(npm config get prefix)/bin/elm-original
+  - printf "#\041/bin/bash\n\necho \"Running elm with sysconfcpus -n 2\"\n\n$TRAVIS_BUILD_DIR/sysconfcpus/bin/sysconfcpus -n 2 elm-original \"\$@\"" > $(npm config get prefix)/bin/elm
+  - chmod +x $(npm config get prefix)/bin/elm
 
 script:
   - ./gradlew assemble

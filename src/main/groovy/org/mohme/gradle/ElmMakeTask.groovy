@@ -8,6 +8,7 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.TaskExecutionException
 
 import java.nio.file.Paths
 
@@ -15,13 +16,12 @@ import java.nio.file.Paths
 class ElmMakeTask extends DefaultTask {
   private Logger logger
 
-  @Input String executable = "elm-make"
+  @Input String executable = "elm"
   @Input String executionDir = "."
   @Input String mainModuleName = 'Main.elm'
   @Input String targetModuleName = 'elm.js'
-  @Input boolean confirm = true
   @Input boolean debug = false
-  @Input boolean warn = false
+  @Input boolean optimize = false
 
   private File sourceDir = Paths.get('src', 'elm').toFile()
   @InputDirectory
@@ -43,7 +43,7 @@ class ElmMakeTask extends DefaultTask {
 
   ElmMakeTask() {
     setGroup('Build')
-    setDescription('Run `elm-make`.')
+    setDescription('Run `elm make`.')
   }
 
   @TaskAction
@@ -54,17 +54,18 @@ class ElmMakeTask extends DefaultTask {
     String[] osSpecificPrefix = (osName.startsWith('Windows')) ? ['cmd', '/c'] : []
     String[] elmMakeCmd = osSpecificPrefix +
                           [executable,
-                           Paths.get(getSourceDir().path, mainModuleName).toString(),
-                           "--output",
-                           Paths.get(getBuildDir().path, targetModuleName).toString()]
-    if (confirm) {
-      elmMakeCmd += '--yes'
+                           "make", Paths.get(getSourceDir().path, mainModuleName).toString(),
+                           "--output", Paths.get(getBuildDir().path, targetModuleName).toString()]
+    if (debug && optimize) {
+      throw new TaskExecutionException(this,
+              new IllegalArgumentException("I cannot compile with 'optimize' and 'debug' at the same time.")
+      )
     }
     if (debug) {
       elmMakeCmd += '--debug'
     }
-    if (warn) {
-      elmMakeCmd += '--warn'
+    if (optimize) {
+      elmMakeCmd += '--optimize'
     }
 
     elmMake(elmMakeCmd)
@@ -116,7 +117,7 @@ class ElmMakeTask extends DefaultTask {
 
     final boolean successful = stdErrLines.isEmpty()
     if (!successful) {
-      throw new GradleException("elm-make failed; see the compiler error output for details.")
+      throw new GradleException("'elm make' failed; see the compiler error output for details.")
     }
   }
 

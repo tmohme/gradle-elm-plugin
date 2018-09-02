@@ -50,7 +50,7 @@ pluginBundle {
   website = 'https://github.com/tmohme/gradle-elm-plugin'
   vcsUrl = 'https://github.com/tmohme/gradle-elm-plugin'
   description = 'A gradle plugin for convenient use of elm.'
-  tags = ['elm', 'elm-make']
+  tags = ['elm', 'elm-make', 'elm make']
 
   plugins {
     greetingsPlugin {
