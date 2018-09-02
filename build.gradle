@@ -53,8 +53,7 @@ pluginBundle {
   tags = ['elm', 'elm-make', 'elm make']
 
   plugins {
-    greetingsPlugin {
-      id = 'org.mohme.gradle.elm-plugin'
+    elmPlugin {
       displayName = 'Gradle Elm plugin'
     }
   }
