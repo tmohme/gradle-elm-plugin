@@ -10,10 +10,13 @@ class BuildLogicFunctionalTest extends Specification {
   @Rule
   final TemporaryFolder testProjectDir = new TemporaryFolder()
   File buildFile
+  File elmDotJson
   File mainFile
 
   def setup() {
     buildFile = testProjectDir.newFile('build.gradle')
+
+    elmDotJson = testProjectDir.newFile('elm.json')
 
     testProjectDir.newFolder('src', 'main', 'elm')
     mainFile = testProjectDir.newFile('src/main/elm/Main.elm')
@@ -52,11 +55,35 @@ class BuildLogicFunctionalTest extends Specification {
       }
       
       elmMake {
-        executable = 'elm-make'
+        executable = 'elm'
         sourceDir = Paths.get('src', 'main', 'elm').toFile()
         executionDir = '${testProjectDir.root.canonicalPath}'
         buildDir = Paths.get("\${project.buildDir.path}", 'elm').toFile()
       }
+    """.stripIndent()
+
+    elmDotJson << """\
+    {
+        "type": "application",
+        "source-directories": [
+            "src/main/elm"
+        ],
+        "elm-version": "0.19.0",
+        "dependencies": {
+            "direct": {
+                "elm/core": "1.0.0",
+                "elm/html": "1.0.0"
+            },
+            "indirect": {
+                "elm/json": "1.0.0",
+                "elm/virtual-dom": "1.0.0"
+            }
+        },
+        "test-dependencies": {
+            "direct": {},
+            "indirect": {}
+        }
+    }
     """.stripIndent()
 
     mainFile << """\
@@ -78,42 +105,5 @@ class BuildLogicFunctionalTest extends Specification {
 
     def elmJs = testProjectDir.root.path + '/build/elm/elm.js'
     new File(elmJs).exists()
-  }
-
-
-  def "warnings break the build"() {
-    given:
-    buildFile << """\
-      import java.nio.file.Paths
-      
-      plugins {
-        id 'org.mohme.gradle.elm-plugin'
-      }
-      
-      elmMake {
-        executable = 'elm-make'
-        sourceDir = Paths.get('src', 'main', 'elm').toFile()
-        executionDir = '${testProjectDir.root.canonicalPath}'
-        buildDir = Paths.get("\${project.buildDir.path}", 'elm').toFile()
-        warn = true
-      }
-    """.stripIndent()
-
-    mainFile << """\
-      import Html 
-      main = Html.text "hello, world!"
-    """.stripIndent()
-
-    when:
-    def result = GradleRunner.create()
-            .withProjectDir(testProjectDir.root)
-            .withArguments('elmMake', '--stacktrace', '--info')
-            .withPluginClasspath()
-            .withDebug(true)
-            .buildAndFail()
-
-    then:
-    result.output.contains(":elmMake")
-    result.task(":elmMake").outcome == TaskOutcome.FAILED
   }
 }

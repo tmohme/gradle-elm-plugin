@@ -2,8 +2,8 @@ plugins {
   id 'groovy'
   id 'java-gradle-plugin'
   id 'maven-publish'
-  id 'net.researchgate.release' version '2.6.0'
-  id 'com.gradle.plugin-publish' version '0.9.10'
+  id 'net.researchgate.release' version '2.7.0'
+  id 'com.gradle.plugin-publish' version '0.10.0'
 }
 
 group 'org.mohme.gradle'
