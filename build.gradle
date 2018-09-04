@@ -59,4 +59,5 @@ pluginBundle {
   }
 }
 
+// To create a new release simply run "./gradlew release"
 afterReleaseBuild.dependsOn publishPlugins
