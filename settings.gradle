@@ -1,2 +1,0 @@
-rootProject.name='elm-plugin'
-enableFeaturePreview('STABLE_PUBLISHING')
