@@ -16,12 +16,8 @@ plugins {
 }
 ```
 
-
-## Tasks
-This plugin adds a `elmMake` task to the build.  
-It *does not* make any other task depend on `elmMake`, thus you might want to add such a dependency yourself.
-
-Configurable properties of the task:
+## Extension
+The plugin supports the `elm` extension with the following properties:
 
 | Name           | default                        | type    | description |
 | -------------- | ------------------------------ | ------- | ----------- |
@@ -33,6 +29,14 @@ Configurable properties of the task:
 | `optimize`     | `true`                         | boolean | Determines whether `elm make` will run with the the `--optimize`-flag. | 
 | `sourceDir`    | `src/elm`                      | File    | The name of the directory in/below which the elm source files are contained. |
 | `targetModule` | `elm.js`                       | String  | The name of the output file to produce. |
+
+## Tasks
+This plugin adds a `elmMake` task to the build.  
+It *does not* make any other task depend on `elmMake`, thus you might want to add such a dependency yourself.
+
+The task has the same configurable properties as the above mentioned `elm` extension.  
+When the property on the task is not set, it defaults to the value  of the corresponding property of the `elm` 
+extension.
 
 ## Compatibility
 The plugin is tested with elm 0.19 and Gradle [4.10, 5.0].

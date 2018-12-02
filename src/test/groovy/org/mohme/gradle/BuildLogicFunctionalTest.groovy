@@ -6,11 +6,14 @@ import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 
+import java.nio.file.Files
+
 class BuildLogicFunctionalTest extends Specification {
   @Rule
   final TemporaryFolder testProjectDir = new TemporaryFolder()
   File buildFile
   File elmDotJson
+  File sourceDir
   File mainFile
 
   def setup() {
@@ -18,8 +21,8 @@ class BuildLogicFunctionalTest extends Specification {
 
     elmDotJson = testProjectDir.newFile('elm.json')
 
-    testProjectDir.newFolder('src', 'main', 'elm')
-    mainFile = testProjectDir.newFile('src/main/elm/Main.elm')
+    sourceDir = testProjectDir.newFolder('src', 'main', 'elm')
+    mainFile = Files.createFile(sourceDir.toPath().resolve('Main.elm')).toFile()
 
     testProjectDir.newFolder('build', 'elm')
   }
@@ -45,7 +48,43 @@ class BuildLogicFunctionalTest extends Specification {
   }
 
 
-  def "run elmMake successfully"() {
+  def "run elmMake successfully with default configuration (mostly)"() {
+    given:
+    buildFile << """\
+      import java.nio.file.Paths
+      
+      plugins {
+        id 'org.mohme.gradle.elm-plugin'
+      }
+      
+      elm {
+        executionDir = '${testProjectDir.root.canonicalPath}'
+      }
+    """.stripIndent()
+
+    elmDotJson << elmDotJsonDefaultContent
+    sourceDir = testProjectDir.newFolder('src', 'elm')
+    mainFile = Files.createFile(sourceDir.toPath().resolve('Main.elm')).toFile()
+    mainFile << mainFileContent
+
+    when:
+    def result = GradleRunner.create()
+            .withProjectDir(testProjectDir.root)
+            .withArguments('elmMake', '--stacktrace', '--info')
+            .withPluginClasspath()
+            .withDebug(true)
+            .build()
+
+    then:
+    result.output.contains(":elmMake")
+    result.task(":elmMake").outcome == TaskOutcome.SUCCESS
+
+    def elmJs = testProjectDir.root.path + '/build/elm/elm.js'
+    new File(elmJs).exists()
+  }
+
+
+  def "run elmMake successfully with task configuration"() {
     given:
     buildFile << """\
       import java.nio.file.Paths
@@ -56,13 +95,89 @@ class BuildLogicFunctionalTest extends Specification {
       
       elmMake {
         executable = 'elm'
-        sourceDir = Paths.get('src', 'main', 'elm').toFile()
         executionDir = '${testProjectDir.root.canonicalPath}'
+
+        sourceDir = file('src/main/elm')
+        mainModuleName = 'Main.elm'
+        
         buildDir = Paths.get("\${project.buildDir.path}", 'elm').toFile()
+        targetModuleName = 'elm.js'
+        
+        debug = false
+        optimize = true
       }
     """.stripIndent()
 
-    elmDotJson << """\
+    elmDotJson << elmDotJsonContent
+    mainFile << mainFileContent
+
+    when:
+    def result = GradleRunner.create()
+            .withProjectDir(testProjectDir.root)
+            .withArguments('elmMake', '--stacktrace', '--info')
+            .withPluginClasspath()
+            .withDebug(true)
+            .build()
+
+    then:
+    result.output.contains(":elmMake")
+    result.task(":elmMake").outcome == TaskOutcome.SUCCESS
+
+    def elmJs = testProjectDir.root.path + '/build/elm/elm.js'
+    new File(elmJs).exists()
+  }
+
+
+  def "run elmMake successfully with extension configuration"() {
+    given:
+    buildFile << """\
+      import java.nio.file.Paths
+      
+      plugins {
+        id 'org.mohme.gradle.elm-plugin'
+      }
+      
+      elm {
+        executable = 'elm'
+        executionDir = '${testProjectDir.root.canonicalPath}'
+
+        sourceDir = file('src/main/elm')
+        mainModuleName = 'Main.elm'
+        
+        buildDir = file("\${project.buildDir.path}/elm")
+        targetModuleName = 'elm.js'
+        
+        debug = true
+        optimize = false
+      }
+    """.stripIndent()
+
+    elmDotJson << elmDotJsonContent
+    mainFile << mainFileContent
+
+    when:
+    def result = GradleRunner.create()
+            .withProjectDir(testProjectDir.root)
+            .withArguments('elmMake', '--stacktrace', '--info')
+            .withPluginClasspath()
+            .withDebug(true)
+            .build()
+
+    then:
+    result.output.contains(":elmMake")
+    result.task(":elmMake").outcome == TaskOutcome.SUCCESS
+
+    def elmJs = testProjectDir.root.path + '/build/elm/elm.js'
+    new File(elmJs).exists()
+  }
+
+
+  def mainFileContent = """\
+      import Html 
+      main = Html.text "hello, world!"
+    """.stripIndent()
+
+  def elmDotJsonContent = """\
     {
         "type": "application",
         "source-directories": [
@@ -86,24 +201,5 @@ class BuildLogicFunctionalTest extends Specification {
     }
     """.stripIndent()
 
-    mainFile << """\
-      import Html 
-      main = Html.text "hello, world!"
-    """.stripIndent()
-
-    when:
-    def result = GradleRunner.create()
-            .withProjectDir(testProjectDir.root)
-            .withArguments('elmMake', '--stacktrace', '--info')
-            .withPluginClasspath()
-            .withDebug(true)
-            .build()
-
-    then:
-    result.output.contains(":elmMake")
-    result.task(":elmMake").outcome == TaskOutcome.SUCCESS
-
-    def elmJs = testProjectDir.root.path + '/build/elm/elm.js'
-    new File(elmJs).exists()
-  }
+  def elmDotJsonDefaultContent = elmDotJsonContent.replaceAll("src/main/elm", "src/elm")
 }
