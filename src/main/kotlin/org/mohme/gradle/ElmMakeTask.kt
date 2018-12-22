@@ -20,10 +20,10 @@ open class ElmMakeTask : DefaultTask() {
     var executable: Property<String>
 
     @Input
-    internal var executionDir: Property<String>
+    var executionDir: Property<String>
 
     @InputDirectory
-    internal var sourceDir: DirectoryProperty
+    var sourceDir: DirectoryProperty
 
     @Input
     var mainModuleName: Property<String>
@@ -38,7 +38,7 @@ open class ElmMakeTask : DefaultTask() {
     var debug: Property<Boolean>
 
     @Input
-    internal var optimize: Property<Boolean>
+    var optimize: Property<Boolean>
 
     init {
         group = "Build"
@@ -57,62 +57,6 @@ open class ElmMakeTask : DefaultTask() {
 
         debug = objectFactory.property(Boolean::class)
         optimize = objectFactory.property(Boolean::class)
-    }
-
-    fun setExecutable(executable: String) {
-        this.executable.set(executable)
-    }
-
-    fun getExecutionDir(): Property<String> {
-        return executable
-    }
-
-    fun setExecutionDir(executionDir: Property<String>) {
-        this.executionDir = executionDir
-    }
-
-    fun setExecutionDir(executionDir: String) {
-        this.executionDir.set(executionDir)
-    }
-
-    fun getSourceDir(): DirectoryProperty {
-        return sourceDir
-    }
-
-    fun setSourceDir(sourceDir: DirectoryProperty) {
-        this.sourceDir = sourceDir
-    }
-
-    fun setSourceDir(sourceDir: File) {
-        this.sourceDir.set(sourceDir)
-    }
-
-    fun setMainModuleName(mainModuleName: String) {
-        this.mainModuleName.set(mainModuleName)
-    }
-
-    fun setBuildDir(buildDir: File) {
-        this.buildDir.set(buildDir)
-    }
-
-    fun setTargetModuleName(targetModuleName: String) {
-        this.targetModuleName.set(targetModuleName)
-    }
-
-    fun setDebug(debug: Boolean?) {
-        this.debug.set(debug)
-    }
-
-    fun getOptimize(): Property<Boolean> {
-        return debug
-    }
-
-    fun setOptimize(optimize: Property<Boolean>) {
-        this.optimize = optimize
-    }
-
-    fun setOptimize(optimize: Boolean?) {
-        this.optimize.set(optimize)
     }
 
 
@@ -161,7 +105,7 @@ open class ElmMakeTask : DefaultTask() {
             throw GradleException(msg, e)
         }
 
-        // collect output
+        // collect output TODO Does this have to happen in this weird pseudo-synchronous way?
         val stdOut = BufferedReader(InputStreamReader(process.inputStream))
         var stdOutLine: String?
         val stdErr = BufferedReader(InputStreamReader(process.errorStream))
