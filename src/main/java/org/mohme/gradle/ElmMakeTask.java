@@ -22,14 +22,19 @@ public class ElmMakeTask extends DefaultTask {
 
     @Input
     Property<String> executable;
+
     @Input
     Property<String> executionDir;
 
+    @InputDirectory
     Property<File> sourceDir;
+
     @Input
     Property<String> mainModuleName;
 
+    @OutputDirectory
     Property<File> buildDir;
+
     @Input
     Property<String> targetModuleName;
 
@@ -78,16 +83,14 @@ public class ElmMakeTask extends DefaultTask {
         this.executionDir.set(executionDir);
     }
 
-    // TODO any chance to move this annotation up?
-    @InputDirectory
-    Property<File> getSourceDir() {
+    public Property<File> getSourceDir() {
         return sourceDir;
     }
-    void setSourceDir(Property<File> sourceDir) {
+    public void setSourceDir(Property<File> sourceDir) {
         logger.lifecycle("task: setting task sourceDirP to " + sourceDir);
         this.sourceDir = sourceDir;
     }
-    void setSourceDir(File sourceDir) {
+    public void setSourceDir(File sourceDir) {
         logger.lifecycle("task: setting task sourceDir to " + sourceDir);
         this.sourceDir.set(sourceDir);
     }
@@ -102,45 +105,43 @@ public class ElmMakeTask extends DefaultTask {
         this.mainModuleName.set(mainModuleName);
     }
 
-    // TODO any chance to move this annotation up?
-    @OutputDirectory
-    Property<File> getBuildDir() {
+    public Property<File> getBuildDir() {
         return buildDir;
     }
-    void setBuildDir(Property<File> buildDir) {
+    public void setBuildDir(Property<File> buildDir) {
         this.buildDir = buildDir;
     }
-    void setBuildDir(File buildDir) {
+    public void setBuildDir(File buildDir) {
         this.buildDir.set(buildDir);
     }
 
     public Property<String> getTargetModuleName() {
         return targetModuleName;
     }
-    void setTargetModuleName(Property<String> targetModuleName) {
+    public void setTargetModuleName(Property<String> targetModuleName) {
         this.targetModuleName = targetModuleName;
     }
-    void setTargetModuleName(String targetModuleName) {
+    public void setTargetModuleName(String targetModuleName) {
         this.targetModuleName.set(targetModuleName);
     }
 
     public Property<Boolean> getDebug() {
         return debug;
     }
-    void setDebug(Property<Boolean> debug) {
+    public void setDebug(Property<Boolean> debug) {
         this.debug = debug;
     }
-    void setDebug(Boolean debug) {
+    public void setDebug(Boolean debug) {
         this.debug.set(debug);
     }
 
     public Property<Boolean> getOptimize() {
         return debug;
     }
-    void setOptimize(Property<Boolean> optimize) {
+    public void setOptimize(Property<Boolean> optimize) {
         this.optimize = optimize;
     }
-    void setOptimize(Boolean optimize) {
+    public void setOptimize(Boolean optimize) {
         this.optimize.set(optimize);
     }
 
