@@ -1,18 +1,20 @@
 package org.mohme.gradle
 
 import org.gradle.api.Project
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Property
+import org.gradle.kotlin.dsl.property
 import java.io.File
 
 open class ElmPluginExtension(project: Project) {
     var executable: Property<String>
     var executionDir: Property<String>
 
-    var sourceDir: Property<File>
+    var sourceDir: DirectoryProperty
     var mainModuleName: Property<String>
 
+    var buildDir: DirectoryProperty
     var targetModuleName: Property<String>
-    var buildDir: Property<File>
 
     var debug: Property<Boolean>
     var optimize: Property<Boolean>
@@ -21,17 +23,17 @@ open class ElmPluginExtension(project: Project) {
     init {
         val objectFactory = project.objects
 
-        executable = objectFactory.property(String::class.java)
-        executionDir = objectFactory.property(String::class.java)
+        executable = objectFactory.property(String::class)
+        executionDir = objectFactory.property(String::class)
 
-        sourceDir = objectFactory.property(File::class.java)
-        mainModuleName = objectFactory.property(String::class.java)
+        sourceDir = objectFactory.directoryProperty()
+        mainModuleName = objectFactory.property(String::class)
 
-        buildDir = objectFactory.property(File::class.java)
-        targetModuleName = objectFactory.property(String::class.java)
+        buildDir = objectFactory.directoryProperty()
+        targetModuleName = objectFactory.property(String::class)
 
-        debug = objectFactory.property(Boolean::class.java)
-        optimize = objectFactory.property(Boolean::class.java)
+        debug = objectFactory.property(Boolean::class)
+        optimize = objectFactory.property(Boolean::class)
     }
 
     fun setExecutable(executable: String) {

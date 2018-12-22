@@ -2,6 +2,7 @@ package org.mohme.gradle
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.create
 import java.nio.file.Paths
 
 
@@ -12,7 +13,7 @@ class ElmPlugin : Plugin<Project> {
 
 
     override fun apply(project: Project) {
-        val elm = project.extensions.create<ElmPluginExtension>("elm", ElmPluginExtension::class.java, project)
+        val elm = project.extensions.create("elm", ElmPluginExtension::class, project)
 
         elm.executable.set(DEFAULT_EXECUTABLE)
         elm.executionDir.set(".")
@@ -26,20 +27,19 @@ class ElmPlugin : Plugin<Project> {
         elm.debug.set(false)
         elm.optimize.set(false)
 
-
-        project.tasks.create("elmMake", ElmMakeTask::class.java) { task ->
+        project.tasks.create("elmMake", ElmMakeTask::class) {
             // configure defaults
-            task.executable = elm.executable
-            task.setExecutionDir(elm.executionDir)
+            executable.set(elm.executable)
+            executionDir.set(elm.executionDir)
 
-            task.setSourceDir(elm.sourceDir)
-            task.mainModuleName = elm.mainModuleName
+            sourceDir.set(elm.sourceDir)
+            mainModuleName.set(elm.mainModuleName)
 
-            task.buildDir = elm.buildDir
-            task.targetModuleName = elm.targetModuleName
+            buildDir.set(elm.buildDir)
+            targetModuleName.set(elm.targetModuleName)
 
-            task.debug = elm.debug
-            task.setOptimize(elm.optimize)
+            debug.set(elm.debug)
+            optimize.set(elm.optimize)
         }
     }
 

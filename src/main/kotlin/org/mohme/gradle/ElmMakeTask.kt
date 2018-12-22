@@ -2,8 +2,10 @@ package org.mohme.gradle
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.*
+import org.gradle.kotlin.dsl.property
 import java.io.BufferedReader
 import java.io.File
 import java.io.IOException
@@ -21,13 +23,13 @@ open class ElmMakeTask : DefaultTask() {
     internal var executionDir: Property<String>
 
     @InputDirectory
-    internal var sourceDir: Property<File>
+    internal var sourceDir: DirectoryProperty
 
     @Input
     var mainModuleName: Property<String>
 
     @OutputDirectory
-    var buildDir: Property<File>
+    var buildDir: DirectoryProperty
 
     @Input
     var targetModuleName: Property<String>
@@ -44,17 +46,17 @@ open class ElmMakeTask : DefaultTask() {
 
         val objectFactory = project.objects
 
-        executable = objectFactory.property(String::class.java)
-        executionDir = objectFactory.property(String::class.java)
+        executable = objectFactory.property(String::class)
+        executionDir = objectFactory.property(String::class)
 
-        sourceDir = objectFactory.property(File::class.java)
-        mainModuleName = objectFactory.property(String::class.java)
+        sourceDir = objectFactory.directoryProperty()
+        mainModuleName = objectFactory.property(String::class)
 
-        buildDir = objectFactory.property(File::class.java)
-        targetModuleName = objectFactory.property(String::class.java)
+        buildDir = objectFactory.directoryProperty()
+        targetModuleName = objectFactory.property(String::class)
 
-        debug = objectFactory.property(Boolean::class.java)
-        optimize = objectFactory.property(Boolean::class.java)
+        debug = objectFactory.property(Boolean::class)
+        optimize = objectFactory.property(Boolean::class)
     }
 
     fun setExecutable(executable: String) {
@@ -73,17 +75,15 @@ open class ElmMakeTask : DefaultTask() {
         this.executionDir.set(executionDir)
     }
 
-    fun getSourceDir(): Property<File> {
+    fun getSourceDir(): DirectoryProperty {
         return sourceDir
     }
 
-    fun setSourceDir(sourceDir: Property<File>) {
-        logger.lifecycle("task: setting task sourceDirP to $sourceDir")
+    fun setSourceDir(sourceDir: DirectoryProperty) {
         this.sourceDir = sourceDir
     }
 
     fun setSourceDir(sourceDir: File) {
-        logger.lifecycle("task: setting task sourceDir to $sourceDir")
         this.sourceDir.set(sourceDir)
     }
 
@@ -126,9 +126,9 @@ open class ElmMakeTask : DefaultTask() {
         }
         elmMakeCmd.add(executable.get())
         elmMakeCmd.add("make")
-        elmMakeCmd.add(Paths.get(getSourceDir().get().path, mainModuleName.get()).toString())
+        elmMakeCmd.add(Paths.get(sourceDir.get().toString(), mainModuleName.get()).toString())
         elmMakeCmd.add("--output")
-        elmMakeCmd.add(Paths.get(buildDir.get().path, targetModuleName.get()).toString())
+        elmMakeCmd.add(Paths.get(buildDir.get().toString(), targetModuleName.get()).toString())
         if (debug.get() && optimize.get()) {
             throw TaskExecutionException(
                     this,
