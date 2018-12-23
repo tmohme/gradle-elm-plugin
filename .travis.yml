@@ -29,7 +29,7 @@ install:
   - npm --version
   - npm install -g elm@$ELM_VERSION
   - mv $(npm config get prefix)/bin/elm $(npm config get prefix)/bin/elm-original
-  - printf "#\041/bin/bash\n\necho \"Running elm with sysconfcpus -n 2\"\n\n$TRAVIS_BUILD_DIR/sysconfcpus/bin/sysconfcpus -n 2 elm-original \"\$@\"" > $(npm config get prefix)/bin/elm
+  - printf "#\041/bin/bash\necho \"Running elm with sysconfcpus -n 2\"\n$TRAVIS_BUILD_DIR/sysconfcpus/bin/sysconfcpus -n 2 elm-original \"\$@\"\nexit \$?\n" > $(npm config get prefix)/bin/elm
   - chmod +x $(npm config get prefix)/bin/elm
 
 script:
