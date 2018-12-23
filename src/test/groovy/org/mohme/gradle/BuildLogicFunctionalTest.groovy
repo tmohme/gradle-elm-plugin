@@ -58,18 +58,7 @@ class BuildLogicFunctionalTest extends Specification {
 
   def "run elmMake successfully with default configuration (mostly)"() {
     given:
-    buildFile << """\
-      import java.nio.file.Paths
-      
-      plugins {
-        id 'org.mohme.gradle.elm-plugin'
-      }
-      
-      elm {
-        executionDir = '${testProjectDir.root.canonicalPath}'
-      }
-    """.stripIndent()
-
+    buildFile << minimalBuildFileContent()
     elmDotJson << elmDotJsonDefaultContent
     sourceDir = testProjectDir.newFolder('src', 'elm')
     mainFile = Files.createFile(sourceDir.toPath().resolve('Main.elm')).toFile()
@@ -84,7 +73,6 @@ class BuildLogicFunctionalTest extends Specification {
             .build()
 
     then:
-    result.output.contains(":elmMake")
     result.task(":elmMake").outcome == TaskOutcome.SUCCESS
 
     def elmJs = testProjectDir.root.path + '/build/elm/elm.js'
@@ -128,7 +116,6 @@ class BuildLogicFunctionalTest extends Specification {
             .build()
 
     then:
-    result.output.contains(":elmMake")
     result.task(":elmMake").outcome == TaskOutcome.SUCCESS
 
     def elmJs = testProjectDir.root.path + '/build/elm/elm.js'
@@ -172,7 +159,6 @@ class BuildLogicFunctionalTest extends Specification {
             .build()
 
     then:
-    result.output.contains(":elmMake")
     result.task(":elmMake").outcome == TaskOutcome.SUCCESS
 
     def elmJs = testProjectDir.root.path + '/build/elm/elm.js'
@@ -181,18 +167,7 @@ class BuildLogicFunctionalTest extends Specification {
 
   def "elmMake is loaded from cache"() {
     given:
-    buildFile << """
-      import java.nio.file.Paths
-      
-      plugins {
-        id 'org.mohme.gradle.elm-plugin'
-      }
-
-      elm {
-        executionDir = '${testProjectDir.root.canonicalPath}'
-      }
-    """
-
+    buildFile << minimalBuildFileContent()
     elmDotJson << elmDotJsonDefaultContent
     sourceDir = testProjectDir.newFolder('src', 'elm')
     mainFile = Files.createFile(sourceDir.toPath().resolve('Main.elm')).toFile()
@@ -220,6 +195,66 @@ class BuildLogicFunctionalTest extends Specification {
 
     then:
     cached.task(":elmMake").outcome == TaskOutcome.FROM_CACHE
+  }
+
+
+  def "logs stdout output with level 'info'"() {
+    given:
+    buildFile << minimalBuildFileContent()
+    elmDotJson << elmDotJsonDefaultContent
+    sourceDir = testProjectDir.newFolder('src', 'elm')
+    mainFile = Files.createFile(sourceDir.toPath().resolve('Main.elm')).toFile()
+    mainFile << mainFileContent
+
+    when:
+    def result = GradleRunner.create()
+            .withProjectDir(testProjectDir.root)
+            .withArguments('elmMake', '--info')
+            .withPluginClasspath()
+            .withDebug(true)
+            .build()
+
+    then:
+    result.task(":elmMake").outcome == TaskOutcome.SUCCESS
+    result.output.contains("Verifying dependencies...")
+  }
+
+
+  def "logs stderr output when no log level is given on CLI"() {
+    given:
+    buildFile << minimalBuildFileContent()
+    elmDotJson << elmDotJsonDefaultContent
+    sourceDir = testProjectDir.newFolder('src', 'elm')
+    mainFile = Files.createFile(sourceDir.toPath().resolve('Main.elm')).toFile()
+    mainFile << "this is no valid elm code"
+
+    when:
+    def result = GradleRunner.create()
+            .withProjectDir(testProjectDir.root)
+            .withArguments('elmMake')
+            .withPluginClasspath()
+            .withDebug(true)
+            .buildAndFail()
+
+    then:
+    result.task(":elmMake").outcome == TaskOutcome.FAILED
+    result.output.contains("PARSE ERROR")
+  }
+
+
+  def minimalBuildFileContent() {
+    // use a method to delay resolution of '${testProjectDir.root.canonicalPath}' until 'testProjectDir' is defined
+    return """\
+      import java.nio.file.Paths
+      
+      plugins {
+        id 'org.mohme.gradle.elm-plugin'
+      }
+      
+      elm {
+        executionDir = '${testProjectDir.root.canonicalPath}'
+      }
+    """.stripIndent()
   }
 
 

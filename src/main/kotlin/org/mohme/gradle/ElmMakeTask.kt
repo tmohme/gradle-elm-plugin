@@ -23,6 +23,7 @@ open class ElmMakeTask : DefaultTask() {
     @Input
     var executionDir: Property<String>
 
+    @PathSensitive(PathSensitivity.RELATIVE)
     @InputDirectory
     var sourceDir: DirectoryProperty
 
@@ -92,9 +93,8 @@ open class ElmMakeTask : DefaultTask() {
     }
 
     private fun elmMake(makeCmd: List<String>) {
-        if (logger.isInfoEnabled) {
-            logger.info("executing '{}'", makeCmd.joinToString(" "))
-        }
+        val cmdString = makeCmd.joinToString(" ")
+        logger.info("executing '{}'", cmdString)
 
         val process: Process
         try {
@@ -102,46 +102,18 @@ open class ElmMakeTask : DefaultTask() {
                     .directory(File(executionDir.get()))
                     .start()
         } catch (e: IOException) {
-            val msg = String.format("failed to execute '%s'", makeCmd.joinToString(" "))
-            throw GradleException(msg, e)
+            throw GradleException("failed to execute '${cmdString}'", e)
         }
 
-        // collect output TODO Does this have to happen in this weird pseudo-synchronous way?
         val stdOut = BufferedReader(InputStreamReader(process.inputStream))
-        var stdOutLine: String?
+        stdOut.lineSequence().forEach { line -> logger.info(line) }
+
         val stdErr = BufferedReader(InputStreamReader(process.errorStream))
-        var stdErrLine: String?
-        val stdOutLines = ArrayList<String>()
-        val stdErrLines = ArrayList<String>()
-        try {
-            stdOutLine = stdOut.readLine()
-            stdErrLine = stdErr.readLine()
-            while (stdOutLine != null || stdErrLine != null) {
-                if (stdOutLine != null) {
-                    stdOutLines.add(stdOutLine)
-                }
-                if (stdErrLine != null) {
-                    stdErrLines.add(stdErrLine)
-                }
+        stdErr.lineSequence().forEach { line -> logger.error(line) }
 
-                stdOutLine = stdOut.readLine()
-                stdErrLine = stdErr.readLine()
-            }
-        } catch (e: IOException) {
-            val msg = String.format(
-                    "failed to collect output from '%s'",
-                    makeCmd.joinToString(" ")
-            )
-            throw GradleException(msg, e)
-        }
 
-        stdOutLines.forEach { line -> logger.info(line) }
-        stdErrLines.forEach { line -> logger.info(line) }
-
-        val successful = stdErrLines.isEmpty()
-        if (!successful) {
-            throw GradleException(
-                    "'elm make' failed; see the compiler error output for details (run gradle with '--info').")
+        if (process.exitValue() != 0) {
+            throw GradleException("'${cmdString}' failed.")
         }
     }
 

@@ -68,7 +68,8 @@ When the property on the task is not set, it defaults to the value  of the corre
 extension.
 
 ## Compatibility
-The plugin is tested with elm 0.19 and Gradle [4.10, 5.0].
+The plugin is tested with elm 0.19 and Gradle [4.10, 5.0].  
+The plugin itself is versioned according to the [Semantic Versioning](https://semver.org) rules. 
 
 ## Release and Migration notes
 . . . can be found [here](release-migration-notes.md)

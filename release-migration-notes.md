@@ -1,5 +1,11 @@
 # Release and Migration notes
 
+## 3.0.0
+* Distinguish success vs. failure of `elm make` based on the process' exit code instead of content in `stderr` 
+  (as it was required for elm 0.18.0)
+* Log `elm make` _stderr_ output with log level `error` in gradle build.
+  `elm make` _stdout_ output continues to be logged with log level `info` in gradle build. 
+
 ## 2.2.0
 The `elmMake` task is now cacheable.
 
