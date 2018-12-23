@@ -14,7 +14,7 @@ import java.nio.file.Paths
 import java.util.*
 
 
-// TODO make cacheable
+@CacheableTask
 open class ElmMakeTask : DefaultTask() {
 
     @Input

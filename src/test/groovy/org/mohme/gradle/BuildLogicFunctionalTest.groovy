@@ -12,19 +12,27 @@ class BuildLogicFunctionalTest extends Specification {
   @Rule
   final TemporaryFolder testProjectDir = new TemporaryFolder()
   File buildFile
+  File localBuildCacheDirectory
   File elmDotJson
   File sourceDir
   File mainFile
 
   def setup() {
+    // establish a fresh build cache for each test
+    localBuildCacheDirectory = testProjectDir.newFolder('local-cache')
+    testProjectDir.newFile('settings.gradle') << """
+        buildCache {
+            local {
+                directory '${localBuildCacheDirectory.toURI()}'
+            }
+        }
+    """
     buildFile = testProjectDir.newFile('build.gradle')
 
     elmDotJson = testProjectDir.newFile('elm.json')
 
     sourceDir = testProjectDir.newFolder('src', 'main', 'elm')
     mainFile = Files.createFile(sourceDir.toPath().resolve('Main.elm')).toFile()
-
-    testProjectDir.newFolder('build', 'elm')
   }
 
 
@@ -169,6 +177,49 @@ class BuildLogicFunctionalTest extends Specification {
 
     def elmJs = testProjectDir.root.path + '/build/elm/elm.js'
     new File(elmJs).exists()
+  }
+
+  def "elmMake is loaded from cache"() {
+    given:
+    buildFile << """
+      import java.nio.file.Paths
+      
+      plugins {
+        id 'org.mohme.gradle.elm-plugin'
+      }
+
+      elm {
+        executionDir = '${testProjectDir.root.canonicalPath}'
+      }
+    """
+
+    elmDotJson << elmDotJsonDefaultContent
+    sourceDir = testProjectDir.newFolder('src', 'elm')
+    mainFile = Files.createFile(sourceDir.toPath().resolve('Main.elm')).toFile()
+    mainFile << mainFileContent
+
+    when:
+    def fresh = GradleRunner.create()
+            .withProjectDir(testProjectDir.root)
+            .withArguments('elmMake', '--build-cache', '--info')
+            .withPluginClasspath()
+            .withDebug(true)
+            .build()
+
+    then:
+    fresh.task(":elmMake").outcome == TaskOutcome.SUCCESS
+
+    when:
+    new File(testProjectDir.root, 'build').deleteDir()
+    def cached = GradleRunner.create()
+            .withProjectDir(testProjectDir.root)
+            .withArguments('elmMake', '--build-cache', '--info')
+            .withPluginClasspath()
+            .withDebug(true)
+            .build()
+
+    then:
+    cached.task(":elmMake").outcome == TaskOutcome.FROM_CACHE
   }
 
 
