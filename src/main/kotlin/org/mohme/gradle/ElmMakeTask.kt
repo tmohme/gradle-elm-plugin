@@ -105,12 +105,13 @@ open class ElmMakeTask : DefaultTask() {
             throw GradleException("failed to execute '${cmdString}'", e)
         }
 
+        process.waitFor()
+
         val stdOut = BufferedReader(InputStreamReader(process.inputStream))
         stdOut.lineSequence().forEach { line -> logger.info(line) }
 
         val stdErr = BufferedReader(InputStreamReader(process.errorStream))
         stdErr.lineSequence().forEach { line -> logger.error(line) }
-
 
         if (process.exitValue() != 0) {
             throw GradleException("'${cmdString}' failed.")
