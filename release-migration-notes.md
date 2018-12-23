@@ -1,6 +1,9 @@
 # Release and Migration notes
 
-## 2.0.0 -> 2.1.0
+## 2.2.0
+The `elmMake` task is now cacheable.
+
+## 2.1.0
 * The plugin got converted to Kotlin, thus usage in a Kotlin build script should be no problem.  
   Usage in a Groovy build script should be unaffected.
 * Introduced the `elm` extension for a more declarative configuration and/or configuration of same values for 
