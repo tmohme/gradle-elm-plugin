@@ -8,12 +8,21 @@ If you want to use elm-platform **0.18**, please use version **1.0.0** of this p
 
 
 ## Usage
-Apply the plugin using standard Gradle procedure:
+Apply the plugin using standard Gradle procedure.  
+For Groovy:
 
 ```groovy
 plugins {
     id 'org.mohme.gradle.elm-plugin' version '<current version>'
 }
+```
+
+For Kotlin:
+```kotlin
+plugins {
+  id("org.mohme.gradle.elm-plugin" ) version "<current version>"
+}
+
 ```
 
 ## Extension
@@ -30,6 +39,26 @@ The plugin supports the `elm` extension with the following properties:
 | `sourceDir`    | `src/elm`                      | File    | The name of the directory in/below which the elm source files are contained. |
 | `targetModule` | `elm.js`                       | String  | The name of the output file to produce. |
 
+Groovy example:
+```groovy
+elm {
+    srcDir = file('src/main/elm')
+    targetModuleName = 'main.js'
+    debug = true
+    optimize = false
+}
+```
+
+Kotlin example:
+```kotlin
+elm {
+    sourceDir.set(project.file("src/main/elm"))
+    targetModuleName.set("main.js")
+    debug.set(true)
+    optimize.set(false)
+}
+```
+
 ## Tasks
 This plugin adds a `elmMake` task to the build.  
 It *does not* make any other task depend on `elmMake`, thus you might want to add such a dependency yourself.
@@ -40,6 +69,9 @@ extension.
 
 ## Compatibility
 The plugin is tested with elm 0.19 and Gradle [4.10, 5.0].
+
+## Release and Migration notes
+. . . can be found [here](release-migration-notes)
 
 ## Known problems
 Running `elm`  might be [incredibly slow](https://github.com/elm-lang/elm-compiler/issues/1473) on some CI-platforms.  
