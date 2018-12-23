@@ -71,7 +71,7 @@ extension.
 The plugin is tested with elm 0.19 and Gradle [4.10, 5.0].
 
 ## Release and Migration notes
-. . . can be found [here](release-migration-notes)
+. . . can be found [here](./release-migration-notes)
 
 ## Known problems
 Running `elm`  might be [incredibly slow](https://github.com/elm-lang/elm-compiler/issues/1473) on some CI-platforms.  
