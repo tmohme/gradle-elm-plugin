@@ -4,7 +4,6 @@ import org.gradle.api.Project
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.property
-import java.io.File
 
 open class ElmPluginExtension(project: Project) {
     var executable: Property<String>
@@ -18,6 +17,10 @@ open class ElmPluginExtension(project: Project) {
 
     var debug: Property<Boolean>
     var optimize: Property<Boolean>
+
+    var testExecutable: Property<String>
+    var testExecutionDir: Property<String>
+
 
 
     init {
@@ -34,38 +37,8 @@ open class ElmPluginExtension(project: Project) {
 
         debug = objectFactory.property(Boolean::class)
         optimize = objectFactory.property(Boolean::class)
-    }
 
-    fun setExecutable(executable: String) {
-        this.executable.set(executable)
+        testExecutable = objectFactory.property(String::class)
+        testExecutionDir = objectFactory.property(String::class)
     }
-
-    fun setExecutionDir(executionDir: String) {
-        this.executionDir.set(executionDir)
-    }
-
-    fun setSourceDir(sourceDir: File) {
-        this.sourceDir.set(sourceDir)
-    }
-
-    fun setMainModuleName(mainModuleName: String) {
-        this.mainModuleName.set(mainModuleName)
-    }
-
-    fun setBuildDir(buildDir: File) {
-        this.buildDir.set(buildDir)
-    }
-
-    fun setTargetModuleName(targetModuleName: String) {
-        this.targetModuleName.set(targetModuleName)
-    }
-
-    fun setDebug(debug: Boolean?) {
-        this.debug.set(debug)
-    }
-
-    fun setOptimize(optimize: Boolean?) {
-        this.optimize.set(optimize)
-    }
-
 }

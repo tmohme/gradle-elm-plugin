@@ -1,5 +1,10 @@
 # Release and Migration notes
 
+## 3.1.0
+* Add (very) basic support for `elm-test`
+* Removed (previously undocumented) possibilities to set the `elm` extension properties. 
+  Now only the documented ones still exist.   
+
 ## 3.0.0
 * Distinguish success vs. failure of `elm make` based on the process' exit code instead of content in `stderr` 
   (as it was required for elm 0.18.0)

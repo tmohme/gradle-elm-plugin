@@ -6,6 +6,8 @@ A gradle plugin for convenient use of elm.
 This plugin requires a working installation of the elm-platform in version **0.19**.  
 If you want to use elm-platform **0.18**, please use version **1.0.0** of this plugin.
 
+When you want to use the `elmTest` task, you need a working installation of the [node-test-runner `elm-test`]
+(https://github.com/rtfeldman/node-test-runner).
 
 ## Usage
 Apply the plugin using standard Gradle procedure.  
@@ -28,16 +30,18 @@ plugins {
 ## Extension
 The plugin supports the `elm` extension with the following properties:
 
-| Name           | default                        | type    | description |
-| -------------- | ------------------------------ | ------- | ----------- |
-| `buildDir`     | `${project.buildDir.path}/elm` | File    | The name of the directory in which we place the output. |
-| `debug`        | `true`                         | boolean | Determines whether `elm make` will run with the the `--debug`-flag. | 
-| `executable`   | `elm`                          | String  | The name of the executable to use. |
-| `executionDir` | `.`                            | File    | The name of the working directory for the execution of `elm-make`. |
-| `mainModule`   | `Main.elm`                     | String  | The name of the main module to give to elm-make. |
-| `optimize`     | `true`                         | boolean | Determines whether `elm make` will run with the the `--optimize`-flag. | 
-| `sourceDir`    | `src/elm`                      | File    | The name of the directory in/below which the elm source files are contained. |
-| `targetModule` | `elm.js`                       | String  | The name of the output file to produce. |
+| Name               | default                        | type    | description |
+| ------------------ | ------------------------------ | ------- | ----------- |
+| `buildDir`         | `${project.buildDir.path}/elm` | File    | The name of the directory in which we place the output. |
+| `debug`            | `true`                         | boolean | Determines whether `elm make` will run with the the `--debug`-flag. | 
+| `executable`       | `elm`                          | String  | The name of the executable to use. |
+| `executionDir`     | `.`                            | File    | The name of the working directory for the execution of `elm-make`. |
+| `mainModule`       | `Main.elm`                     | String  | The name of the main module to give to elm-make. |
+| `optimize`         | `true`                         | boolean | Determines whether `elm make` will run with the the `--optimize`-flag. | 
+| `sourceDir`        | `src/elm`                      | File    | The name of the directory in/below which the elm source files are contained. |
+| `targetModule`     | `elm.js`                       | String  | The name of the output file to produce. |
+| `testExecutable`   | `elm-test`                     | String  | The name of the executable to use. |
+| `testExecutionDir` | `.`                            | File    | The name of the working directory for the execution of `elm-test`. |
 
 Groovy example:
 ```groovy
@@ -60,12 +64,26 @@ elm {
 ```
 
 ## Tasks
+### elmMake
 This plugin adds a `elmMake` task to the build.  
 It *does not* make any other task depend on `elmMake`, thus you might want to add such a dependency yourself.
 
-The task has the same configurable properties as the above mentioned `elm` extension.  
+The task has the same configurable properties as the above mentioned `elm` extension (except for the "test*" properties).  
 When the property on the task is not set, it defaults to the value  of the corresponding property of the `elm` 
 extension.
+
+### elmTest
+This plugin adds a `elmTest` task to the build.  
+It *does not* make any other task depend on `elmTest`, thus you might want to add such a dependency yourself.
+
+The tasks only configurable properties are `executable` and `executionDir`, which correspond to the `elm` extension 
+properties `testExecutable` resp. `testExecutionDir`.
+
+Effectively, the `elmTest` task is nothing more than a simple mechanism to integrate the `node-test-runner` into the 
+build. As such the same restrictions and assumptions apply. The most obvious one is, that the tests have to be placed 
+in a directory named `tests` immediately below the execution directory.  
+For other restrictions / assumptions please have a look at [it's documentation](https://github.com/rtfeldman/node-test-runner).
+If you need more configurability, please let me know.
 
 ## Compatibility
 The plugin is tested with elm 0.19 and Gradle [4.10, 5.0].  
@@ -78,7 +96,9 @@ The plugin itself is versioned according to the [Semantic Versioning](https://se
 Running `elm`  might be [incredibly slow](https://github.com/elm-lang/elm-compiler/issues/1473) on some CI-platforms.  
 This is not a problem of this plugin, but kind of a misunderstanding between `elm make` and what the underlying platform
 tells `elm` about its capabilities.  
-Workarounds are described in the linked discussion and e.g. in [this elm-discuss thread](https://groups.google.com/forum/#!topic/elm-discuss/Y3bTYRPqBXE).  
+Workarounds are described in the linked discussion and e.g. in [this elm-discuss thread]
+(https://groups.google.com/forum/#!topic/elm-discuss/Y3bTYRPqBXE).  
+Alternatively just have a look at this project's [`.travis.yml`](.travis.yml).
 
 ## Contribution
 I'm happy about contributions of all sorts.  

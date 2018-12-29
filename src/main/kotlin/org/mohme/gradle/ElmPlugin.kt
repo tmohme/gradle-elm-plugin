@@ -10,6 +10,7 @@ class ElmPlugin : Plugin<Project> {
     val DEFAULT_EXECUTABLE = "elm"
     val DEFAULT_MAIN_MODULE = "Main.elm"
     val DEFAULT_TARGET_MODULE = "elm.js"
+    val DEFAULT_TEST_EXECUTABLE = "elm-test"
 
 
     override fun apply(project: Project) {
@@ -27,6 +28,9 @@ class ElmPlugin : Plugin<Project> {
         elm.debug.set(false)
         elm.optimize.set(false)
 
+        elm.testExecutable.set(DEFAULT_TEST_EXECUTABLE)
+        elm.testExecutionDir.set(".")
+
         project.tasks.create("elmMake", ElmMakeTask::class) {
             // configure defaults
             executable.set(elm.executable)
@@ -40,6 +44,12 @@ class ElmPlugin : Plugin<Project> {
 
             debug.set(elm.debug)
             optimize.set(elm.optimize)
+        }
+
+        project.tasks.create("elmTest", ElmTestTask::class) {
+            // configure defaults
+            executable.set(elm.testExecutable)
+            executionDir.set(elm.testExecutionDir)
         }
     }
 
