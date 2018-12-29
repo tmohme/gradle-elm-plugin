@@ -6,8 +6,9 @@ A gradle plugin for convenient use of elm.
 This plugin requires a working installation of the elm-platform in version **0.19**.  
 If you want to use elm-platform **0.18**, please use version **1.0.0** of this plugin.
 
-When you want to use the `elmTest` task, you need a working installation of the [node-test-runner `elm-test`]
-(https://github.com/rtfeldman/node-test-runner).
+## Prerequisites
+Obviously you need a working `elm` installation to use this plugin.  
+When you want to use the `elmTest` task, you need a working installation of the [node-test-runner `elm-test`](https://github.com/rtfeldman/node-test-runner).
 
 ## Usage
 Apply the plugin using standard Gradle procedure.  
@@ -96,13 +97,12 @@ The plugin itself is versioned according to the [Semantic Versioning](https://se
 Running `elm`  might be [incredibly slow](https://github.com/elm-lang/elm-compiler/issues/1473) on some CI-platforms.  
 This is not a problem of this plugin, but kind of a misunderstanding between `elm make` and what the underlying platform
 tells `elm` about its capabilities.  
-Workarounds are described in the linked discussion and e.g. in [this elm-discuss thread]
-(https://groups.google.com/forum/#!topic/elm-discuss/Y3bTYRPqBXE).  
+Workarounds are described in the linked discussion and e.g. in [this elm-discuss thread](https://groups.google.com/forum/#!topic/elm-discuss/Y3bTYRPqBXE).  
 Alternatively just have a look at this project's [`.travis.yml`](.travis.yml).
 
 ## Contribution
 I'm happy about contributions of all sorts.  
-Before you actually do work on the project, please read the contribution guide (`contributing.md`).
+Before you actually do work on the project, please read the [contribution guide](contributing.md).
 
 ## License
 This plugin is made available under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0).
