@@ -87,8 +87,10 @@ For other restrictions / assumptions please have a look at [it's documentation](
 If you need more configurability, please let me know.
 
 ## Compatibility
-The plugin is tested with elm 0.19 and Gradle [4.10, 5.0].  
-The plugin itself is versioned according to the [Semantic Versioning](https://semver.org) rules. 
+This plugin is versioned according to the [Semantic Versioning](https://semver.org) rules.
+* Versions >=2.0.3 are compatible with elm 0.19 and Gradle 5.x (tested with 5.0 .. 5.1.1)
+* Versions 2.0.0 .. 2.0.2 are compatible with elm 0.19 and Gradle 4.10
+* Version 1.0.0 is compatible with elm 0.18 and Gradle 4.6
 
 ## Release and Migration notes
 . . . can be found [here](release-migration-notes.md)

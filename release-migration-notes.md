@@ -1,5 +1,11 @@
 # Release and Migration notes
 
+## 3.1.2
+* Fix documentation issues.
+
+## 3.1.1
+* Fix documentation issues.
+
 ## 3.1.0
 * Add (very) basic support for `elm-test`
 * Removed (previously undocumented) possibilities to set the `elm` extension properties. 

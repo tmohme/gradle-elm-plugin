@@ -36,7 +36,7 @@ class BuildLogicFunctionalTest extends Specification {
   }
 
 
-  def "can apply plugin"() {
+  def "can apply plugin with 'own' gradle version"() {
     given:
     buildFile << """
       plugins {
