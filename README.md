@@ -37,17 +37,17 @@ The plugin supports the `elm` extension with the following properties:
 | `debug`            | `true`                         | boolean | Determines whether `elm make` will run with the the `--debug`-flag. | 
 | `executable`       | `elm`                          | String  | The name of the executable to use. |
 | `executionDir`     | `.`                            | File    | The name of the working directory for the execution of `elm-make`. |
-| `mainModule`       | `Main.elm`                     | String  | The name of the main module to give to elm-make. |
+| `mainModuleName`   | `Main.elm`                     | String  | The name of the main module to give to elm-make. |
 | `optimize`         | `true`                         | boolean | Determines whether `elm make` will run with the the `--optimize`-flag. | 
 | `sourceDir`        | `src/elm`                      | File    | The name of the directory in/below which the elm source files are contained. |
-| `targetModule`     | `elm.js`                       | String  | The name of the output file to produce. |
+| `targetModuleName` | `elm.js`                       | String  | The name of the output file to produce. |
 | `testExecutable`   | `elm-test`                     | String  | The name of the executable to use. |
 | `testExecutionDir` | `.`                            | File    | The name of the working directory for the execution of `elm-test`. |
 
 Groovy example:
 ```groovy
 elm {
-    srcDir = file('src/main/elm')
+    sourceDir = file('src/main/elm')
     targetModuleName = 'main.js'
     debug = true
     optimize = false
