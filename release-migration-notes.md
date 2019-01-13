@@ -1,5 +1,9 @@
 # Release and Migration notes
 
+## 3.2.0
+* Improve compatibility with older Gradle versions.  
+  The plugin is now tested against all minor versions (latest patch) of gradle Gradle since 4.4.1 
+
 ## 3.1.2
 * Fix documentation issues.
 

@@ -36,7 +36,7 @@ class BuildLogicFunctionalTest extends Specification {
   }
 
 
-  def "can apply plugin with 'own' gradle version"() {
+  def "can apply plugin"(String gradleVersion) {
     given:
     buildFile << """
       plugins {
@@ -46,6 +46,7 @@ class BuildLogicFunctionalTest extends Specification {
 
     when:
     def result = GradleRunner.create()
+            .withGradleVersion(gradleVersion)
             .withProjectDir(testProjectDir.root)
             .withArguments('tasks', '--all', '--stacktrace', '--info')
             .withPluginClasspath()
@@ -53,10 +54,22 @@ class BuildLogicFunctionalTest extends Specification {
 
     then:
     result.output.contains("elmMake")
+
+    where:
+    gradleVersion | _
+    "5.1.1"       | _
+    "5.1"         | _
+    "5.0"         | _
+    "4.10.3"      | _
+    "4.9"         | _
+    "4.7"         | _
+    "4.6"         | _
+    "4.5.1"       | _
+    "4.4.1"       | _
   }
 
 
-  def "run elmMake successfully with default configuration (mostly)"() {
+  def "run elmMake successfully with default configuration (mostly)"(String gradleVersion) {
     given:
     buildFile << minimalBuildFileContent()
     elmDotJson << elmDotJsonDefaultContent
@@ -66,6 +79,7 @@ class BuildLogicFunctionalTest extends Specification {
 
     when:
     def result = GradleRunner.create()
+            .withGradleVersion(gradleVersion)
             .withProjectDir(testProjectDir.root)
             .withArguments('elmMake', '--stacktrace', '--info')
             .withPluginClasspath()
@@ -77,10 +91,22 @@ class BuildLogicFunctionalTest extends Specification {
 
     def elmJs = testProjectDir.root.path + '/build/elm/elm.js'
     new File(elmJs).exists()
+
+    where:
+    gradleVersion | _
+    "5.1.1"       | _
+    "5.1"         | _
+    "5.0"         | _
+    "4.10.3"      | _
+    "4.9"         | _
+    "4.7"         | _
+    "4.6"         | _
+    "4.5.1"       | _
+    "4.4.1"       | _
   }
 
 
-  def "run elmMake successfully with task configuration"() {
+  def "run elmMake successfully with task configuration"(String gradleVersion) {
     given:
     buildFile << """\
       import java.nio.file.Paths
@@ -109,6 +135,7 @@ class BuildLogicFunctionalTest extends Specification {
 
     when:
     def result = GradleRunner.create()
+            .withGradleVersion(gradleVersion)
             .withProjectDir(testProjectDir.root)
             .withArguments('elmMake', '--stacktrace', '--info')
             .withPluginClasspath()
@@ -120,6 +147,18 @@ class BuildLogicFunctionalTest extends Specification {
 
     def elmJs = testProjectDir.root.path + '/build/elm/elm.js'
     new File(elmJs).exists()
+
+    where:
+    gradleVersion | _
+    "5.1.1"       | _
+    "5.1"         | _
+    "5.0"         | _
+    "4.10.3"      | _
+    "4.9"         | _
+    "4.7"         | _
+    "4.6"         | _
+    "4.5.1"       | _
+    "4.4.1"       | _
   }
 
 

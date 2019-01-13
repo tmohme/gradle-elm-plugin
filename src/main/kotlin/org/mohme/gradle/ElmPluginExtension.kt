@@ -26,19 +26,21 @@ open class ElmPluginExtension(project: Project) {
     init {
         val objectFactory = project.objects
 
-        executable = objectFactory.property(String::class)
-        executionDir = objectFactory.property(String::class)
+        executable = objectFactory.property()
+        executionDir = objectFactory.property()
 
-        sourceDir = objectFactory.directoryProperty()
-        mainModuleName = objectFactory.property(String::class)
+        // use deprecated "project.layout.directoryProperty()" instead of "objectFactory.directoryProperty()" to be compatible with Gradle 4
+        sourceDir = project.layout.directoryProperty()
+        mainModuleName = objectFactory.property()
 
-        buildDir = objectFactory.directoryProperty()
-        targetModuleName = objectFactory.property(String::class)
+        // use deprecated "project.layout.directoryProperty()" instead of "objectFactory.directoryProperty()" to be compatible with Gradle 4
+        buildDir = project.layout.directoryProperty()
+        targetModuleName = objectFactory.property()
 
-        debug = objectFactory.property(Boolean::class)
-        optimize = objectFactory.property(Boolean::class)
+        debug = objectFactory.property()
+        optimize = objectFactory.property()
 
-        testExecutable = objectFactory.property(String::class)
-        testExecutionDir = objectFactory.property(String::class)
+        testExecutable = objectFactory.property()
+        testExecutionDir = objectFactory.property()
     }
 }
