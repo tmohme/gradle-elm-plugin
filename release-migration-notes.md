@@ -1,5 +1,8 @@
 # Release and Migration notes
 
+## 3.2.2
+* Improve documentation.
+
 ## 3.2.1
 * Fix documentation issues.
 

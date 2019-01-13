@@ -97,11 +97,15 @@ This plugin is versioned according to the [Semantic Versioning](https://semver.o
 . . . can be found [here](release-migration-notes.md)
 
 ## Known problems
-Running `elm`  might be [incredibly slow](https://github.com/elm-lang/elm-compiler/issues/1473) on some CI-platforms.  
+Running `elm` might be [incredibly slow](https://github.com/elm-lang/elm-compiler/issues/1473) on some CI-platforms.  
 This is not a problem of this plugin, but kind of a misunderstanding between `elm make` and what the underlying platform
-tells `elm` about its capabilities.  
-Workarounds are described in the linked discussion and e.g. in [this elm-discuss thread](https://groups.google.com/forum/#!topic/elm-discuss/Y3bTYRPqBXE).  
-Alternatively just have a look at this project's [`.travis.yml`](.travis.yml).
+tells the elm compiler about the platform's capabilities.  
+Be careful with the workarounds that are described in various discussions (e.g. in 
+[this elm-discuss thread](https://groups.google.com/forum/#!topic/elm-discuss/Y3bTYRPqBXE)). They typically wrap the
+original `elm` executable in a small script (which is OK) without ensuring that the script returns with `elm`'s original 
+return code (which causes trouble).  
+When you are using this kind of wrapper-script and have trouble with this plugin, have a look at this project's 
+[`.travis.yml`](.travis.yml).  
 
 ## Contribution
 I'm happy about contributions of all sorts.  
