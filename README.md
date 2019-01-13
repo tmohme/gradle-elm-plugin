@@ -36,13 +36,13 @@ The plugin supports the `elm` extension with the following properties:
 | `buildDir`         | `${project.buildDir.path}/elm` | File    | The name of the directory in which we place the output. |
 | `debug`            | `true`                         | boolean | Determines whether `elm make` will run with the the `--debug`-flag. | 
 | `executable`       | `elm`                          | String  | The name of the executable to use. |
-| `executionDir`     | `.`                            | File    | The name of the working directory for the execution of `elm-make`. |
+| `executionDir`     | `.`                            | String  | The name of the working directory for the execution of `elm-make`. |
 | `mainModuleName`   | `Main.elm`                     | String  | The name of the main module to give to elm-make. |
 | `optimize`         | `true`                         | boolean | Determines whether `elm make` will run with the the `--optimize`-flag. | 
 | `sourceDir`        | `src/elm`                      | File    | The name of the directory in/below which the elm source files are contained. |
 | `targetModuleName` | `elm.js`                       | String  | The name of the output file to produce. |
 | `testExecutable`   | `elm-test`                     | String  | The name of the executable to use. |
-| `testExecutionDir` | `.`                            | File    | The name of the working directory for the execution of `elm-test`. |
+| `testExecutionDir` | `.`                            | String  | The name of the working directory for the execution of `elm-test`. |
 
 Groovy example:
 ```groovy
