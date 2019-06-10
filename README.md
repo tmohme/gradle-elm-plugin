@@ -28,18 +28,21 @@ plugins {
 
 ```
 
+If you are confused about what the tasks are doing, try running gradle with `--info`. Then the tasks will produce log
+output showing the actual call to the underlying functionality.
+
 ## Extension
 The plugin supports the `elm` extension with the following properties:
 
 | Name               | default                        | type    | description |
 | ------------------ | ------------------------------ | ------- | ----------- |
 | `buildDir`         | `${project.buildDir.path}/elm` | File    | The name of the directory in which we place the output. |
-| `debug`            | `true`                         | boolean | Determines whether `elm make` will run with the the `--debug`-flag. | 
+| `debug`            | `true`                         | boolean | Determines whether `elm make` will run with the `--debug`-flag. | 
 | `executable`       | `elm`                          | String  | The name of the executable to use. |
-| `executionDir`     | `.`                            | String  | The name of the working directory for the execution of `elm-make`. |
-| `mainModuleName`   | `Main.elm`                     | String  | The name of the main module to give to elm-make. |
+| `executionDir`     | `.`                            | String  | The name of the working directory for the execution of `elm make`. |
+| `mainModuleName`   | `Main.elm`                     | String  | The name of the main module to give to `elm make`. |
 | `optimize`         | `true`                         | boolean | Determines whether `elm make` will run with the the `--optimize`-flag. | 
-| `sourceDir`        | `src/elm`                      | File    | The name of the directory in/below which the elm source files are contained. |
+| `sourceDir`        | `src/elm`                      | File    | The name of the directory in which the main module will be searched. |
 | `targetModuleName` | `elm.js`                       | String  | The name of the output file to produce. |
 | `testExecutable`   | `elm-test`                     | String  | The name of the executable to use. |
 | `testExecutionDir` | `.`                            | String  | The name of the working directory for the execution of `elm-test`. |
@@ -73,6 +76,15 @@ The task has the same configurable properties as the above mentioned `elm` exten
 When the property on the task is not set, it defaults to the value  of the corresponding property of the `elm` 
 extension.
 
+#### Expected directory layout
+This task is just a thin wrapper around the `elm` executable and as such "inherits" all assumptions/restrictions
+about the directory layout of the project:
+* The `elm.json` file is expected in the current working directory, which can be specified as `executionDir` 
+  (see "Extension" above).
+* Within the `elm.json`, you have to specify `source-directories` in which `elm` will look for modules.
+* The task property `sourceDir` _only_ impacts the creation of the full path to the mainModule for the
+  underlying "elm make" call.
+
 ### elmTest
 This plugin adds a `elmTest` task to the build.  
 It *does not* make any other task depend on `elmTest`, thus you might want to add such a dependency yourself.
@@ -88,7 +100,7 @@ If you need more configurability, please let me know.
 
 ## Compatibility
 This plugin is versioned according to the [Semantic Versioning](https://semver.org) rules.
-* Versions >=3.2.0 are compatible with elm 0.19 and Gradle >= 4.4.1  (tested with 4.4.1 .. 5.1.1)
+* Versions >=3.2.0 are compatible with elm 0.19 and Gradle >= 4.4.1  (tested with 4.4.1 .. 5.4.1)
 * Versions 2.0.3 .. 3.1.2 are compatible with elm 0.19 and Gradle 5.x (tested with 5.0 .. 5.1.1)
 * Versions 2.0.0 .. 2.0.2 are compatible with elm 0.19 and Gradle 4.10
 * Version 1.0.0 is compatible with elm 0.18 and Gradle 4.6
