@@ -1,11 +1,10 @@
-import com.gradle.publish.PluginConfig
-
 plugins {
   groovy
   `kotlin-dsl`
   `maven-publish`
-  id("net.researchgate.release") version "2.7.0"
-  id("com.gradle.plugin-publish") version "0.10.0"
+  id("net.researchgate.release") version "2.8.1"
+  id("com.gradle.plugin-publish") version "0.10.1"
+  id("com.github.ben-manes.versions") version "0.22.0"
 }
 
 group = "org.mohme.gradle"
@@ -25,7 +24,7 @@ gradlePlugin {
 
 dependencies {
   testCompile( gradleTestKit() )
-  testCompile("org.spockframework:spock-core:1.1-groovy-2.4") {
+  testCompile("org.spockframework:spock-core:1.3-groovy-2.5") {
     exclude(module = "groovy-all")
   }
 }

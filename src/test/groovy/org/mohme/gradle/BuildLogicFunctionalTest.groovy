@@ -57,6 +57,8 @@ class BuildLogicFunctionalTest extends Specification {
 
     where:
     gradleVersion | _
+    "5.6"         | _
+    "5.5.1"       | _
     "5.4.1"       | _
     "5.3.1"       | _
     "5.2"         | _
@@ -96,8 +98,12 @@ class BuildLogicFunctionalTest extends Specification {
 
     where:
     gradleVersion | _
+    "5.6"         | _
+    "5.5.1"       | _
+    "5.4.1"       | _
+    "5.3.1"       | _
+    "5.2"         | _
     "5.1.1"       | _
-    "5.1"         | _
     "5.0"         | _
     "4.10.3"      | _
     "4.9"         | _
@@ -152,8 +158,12 @@ class BuildLogicFunctionalTest extends Specification {
 
     where:
     gradleVersion | _
+    "5.6"         | _
+    "5.5.1"       | _
+    "5.4.1"       | _
+    "5.3.1"       | _
+    "5.2"         | _
     "5.1.1"       | _
-    "5.1"         | _
     "5.0"         | _
     "4.10.3"      | _
     "4.9"         | _

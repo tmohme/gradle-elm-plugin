@@ -1,5 +1,8 @@
 # Release and Migration notes
 
+## 3.2.3
+* Upgrade to Gradle 5.6.
+
 ## 3.2.2
 * Improve documentation.
 
