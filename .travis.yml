@@ -3,6 +3,7 @@ language: groovy
 
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 
 cache:
   directories:
@@ -32,6 +33,9 @@ install:
   # Make sure that the wrapper script exits with the return-code of "elm-original"
   - printf "#\041/bin/bash\necho \"Running elm with sysconfcpus -n 2\"\n$TRAVIS_BUILD_DIR/sysconfcpus/bin/sysconfcpus -n 2 elm-original \"\$@\"\nexit \$?\n" > $(npm config get prefix)/bin/elm
   - chmod +x $(npm config get prefix)/bin/elm
+
+jdk:
+  - openjdk8
 
 script:
   - ./gradlew assemble
