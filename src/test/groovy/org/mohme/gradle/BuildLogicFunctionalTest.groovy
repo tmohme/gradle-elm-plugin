@@ -10,7 +10,7 @@ import java.nio.file.Files
 
 class BuildLogicFunctionalTest extends Specification {
   @Rule
-  final TemporaryFolder testProjectDir = new TemporaryFolder()
+  TemporaryFolder testProjectDir = new TemporaryFolder()
   File buildFile
   File localBuildCacheDirectory
   File elmDotJson
@@ -66,10 +66,6 @@ class BuildLogicFunctionalTest extends Specification {
     "5.0"         | _
     "4.10.3"      | _
     "4.9"         | _
-    "4.7"         | _
-    "4.6"         | _
-    "4.5.1"       | _
-    "4.4.1"       | _
   }
 
 
@@ -107,10 +103,6 @@ class BuildLogicFunctionalTest extends Specification {
     "5.0"         | _
     "4.10.3"      | _
     "4.9"         | _
-    "4.7"         | _
-    "4.6"         | _
-    "4.5.1"       | _
-    "4.4.1"       | _
   }
 
 
@@ -167,10 +159,6 @@ class BuildLogicFunctionalTest extends Specification {
     "5.0"         | _
     "4.10.3"      | _
     "4.9"         | _
-    "4.7"         | _
-    "4.6"         | _
-    "4.5.1"       | _
-    "4.4.1"       | _
   }
 
 

@@ -1,5 +1,9 @@
 # Release and Migration notes
 
+## 3.3.0
+* Upgrade to Gradle 5.6.4.
+* Remove support for gradle < 4.9 because theses gradle versions have problems with openjdk 11.0.5
+
 ## 3.2.3
 * Upgrade to Gradle 5.6.
 

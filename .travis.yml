@@ -1,5 +1,5 @@
 
-language: groovy
+language: java
 
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -36,6 +36,7 @@ install:
 
 jdk:
   - openjdk8
+  - openjdk11
 
 script:
   - ./gradlew assemble
