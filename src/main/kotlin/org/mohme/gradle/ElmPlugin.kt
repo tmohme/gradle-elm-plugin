@@ -6,12 +6,12 @@ import org.gradle.kotlin.dsl.create
 import java.nio.file.Paths
 
 
-class ElmPlugin : Plugin<Project> {
-    val DEFAULT_EXECUTABLE = "elm"
-    val DEFAULT_MAIN_MODULE = "Main.elm"
-    val DEFAULT_TARGET_MODULE = "elm.js"
-    val DEFAULT_TEST_EXECUTABLE = "elm-test"
+const val DEFAULT_EXECUTABLE = "elm"
+const val DEFAULT_MAIN_MODULE = "Main.elm"
+const val DEFAULT_TARGET_MODULE = "elm.js"
+const val DEFAULT_TEST_EXECUTABLE = "elm-test"
 
+class ElmPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         val elm = project.extensions.create("elm", ElmPluginExtension::class, project)

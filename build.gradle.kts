@@ -4,13 +4,19 @@ plugins {
   `maven-publish`
   id("net.researchgate.release") version "2.8.1"
   id("com.gradle.plugin-publish") version "0.10.1"
-  id("com.github.ben-manes.versions") version "0.22.0"
+  id("com.github.ben-manes.versions") version "0.27.0"
+  id("io.gitlab.arturbosch.detekt").version("1.1.1")
 }
 
 group = "org.mohme.gradle"
 
 repositories {
   jcenter()
+}
+
+detekt {
+  buildUponDefaultConfig = true
+  config = files("detekt.config.yml")
 }
 
 gradlePlugin {
@@ -23,8 +29,8 @@ gradlePlugin {
 }
 
 dependencies {
-  testCompile( gradleTestKit() )
-  testCompile("org.spockframework:spock-core:1.3-groovy-2.5") {
+  testImplementation( gradleTestKit() )
+  testImplementation("org.spockframework:spock-core:1.3-groovy-2.5") {
     exclude(module = "groovy-all")
   }
 }
