@@ -1,5 +1,9 @@
 # Release and Migration notes
 
+## 4.0.0
+* Add support for Gradle 6.0, 
+* Remove support for Gradle 4.x (because of incompatible API)
+
 ## 3.3.0
 * Upgrade to Gradle 5.6.4.
 * Remove support for gradle < 4.9 because theses gradle versions have problems with openjdk 11.0.5

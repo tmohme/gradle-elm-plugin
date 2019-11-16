@@ -2,7 +2,6 @@ package org.mohme.gradle
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
-import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
@@ -16,21 +15,17 @@ import java.util.*
 
 @CacheableTask
 open class ElmTestTask : DefaultTask() {
+    private val objectFactory get() = project.objects
 
     @Input
-    var executable: Property<String>
+    val executable = objectFactory.property<String>()
 
     @Input
-    var executionDir: Property<String>
+    val executionDir = objectFactory.property<String>()
 
     init {
         group = "Verification"
         description = "Run `elm-test`."
-
-        val objectFactory = project.objects
-
-        executable = objectFactory.property(String::class)
-        executionDir = objectFactory.property(String::class)
     }
 
 

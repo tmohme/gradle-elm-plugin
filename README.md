@@ -100,9 +100,10 @@ If you need more configurability, please let me know.
 
 ## Compatibility
 This plugin is versioned according to the [Semantic Versioning](https://semver.org) rules.
-* Versions >=3.3.0 are compatible with elm 0.19 and Gradle >= 4.9  (tested with 4.9 .. 5.6.4)
-* Versions 3.2.0 .. 3.2.2 are compatible with elm 0.19 and Gradle >= 4.4.1  (tested with 4.4.1 .. 5.6)
-* Versions 2.0.3 .. 3.1.2 are compatible with elm 0.19 and Gradle 5.x (tested with 5.0 .. 5.1.1)
+* Versions >=4.0.0 are compatible with elm 0.19 and Gradle >=5.0 (tested with 5.0 .. 6.0)
+* Version  3.3.0 is compatible with elm 0.19 and Gradle 4.9 .. 5.6.4
+* Versions 3.2.0 .. 3.2.2 are compatible with elm 0.19 and Gradle 4.4.1 .. 5.6
+* Versions 2.0.3 .. 3.1.2 are compatible with elm 0.19 and Gradle 5.0 .. 5.1.1
 * Versions 2.0.0 .. 2.0.2 are compatible with elm 0.19 and Gradle 4.10
 * Version 1.0.0 is compatible with elm 0.18 and Gradle 4.6
 

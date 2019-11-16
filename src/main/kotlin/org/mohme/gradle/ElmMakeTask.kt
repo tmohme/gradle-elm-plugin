@@ -2,8 +2,6 @@ package org.mohme.gradle
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
-import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.provider.Property
 import org.gradle.api.tasks.*
 import org.gradle.kotlin.dsl.property
 import java.io.BufferedReader
@@ -16,51 +14,36 @@ import java.util.*
 
 @CacheableTask
 open class ElmMakeTask : DefaultTask() {
+    private val objectFactory get() = project.objects
 
     @Input
-    var executable: Property<String>
+    val executable = objectFactory.property<String>()
 
     @Input
-    var executionDir: Property<String>
+    val executionDir = objectFactory.property<String>()
 
     @PathSensitive(PathSensitivity.RELATIVE)
     @InputDirectory
-    var sourceDir: DirectoryProperty
+    val sourceDir = objectFactory.directoryProperty()
 
     @Input
-    var mainModuleName: Property<String>
+    val mainModuleName = objectFactory.property<String>()
 
     @OutputDirectory
-    var buildDir: DirectoryProperty
+    val buildDir = objectFactory.directoryProperty()
 
     @Input
-    var targetModuleName: Property<String>
+    val targetModuleName = objectFactory.property<String>()
 
     @Input
-    var debug: Property<Boolean>
+    val debug = objectFactory.property<Boolean>()
 
     @Input
-    var optimize: Property<Boolean>
+    val optimize = objectFactory.property<Boolean>()
 
     init {
         group = "Build"
         description = "Run `elm make`."
-
-        val objectFactory = project.objects
-
-        executable = objectFactory.property()
-        executionDir = objectFactory.property()
-
-        // use deprecated "project.layout.directoryProperty()" instead of "objectFactory.directoryProperty()" to be compatible with Gradle 4
-        sourceDir = project.layout.directoryProperty()
-        mainModuleName = objectFactory.property()
-
-        // use deprecated "project.layout.directoryProperty()" instead of "objectFactory.directoryProperty()" to be compatible with Gradle 4
-        buildDir = project.layout.directoryProperty()
-        targetModuleName = objectFactory.property()
-
-        debug = objectFactory.property()
-        optimize = objectFactory.property()
     }
 
 
