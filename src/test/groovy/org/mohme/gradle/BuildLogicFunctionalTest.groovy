@@ -64,7 +64,6 @@ class BuildLogicFunctionalTest extends Specification {
     "5.3.1"       | _
     "5.2"         | _
     "5.1.1"       | _
-    "5.0"         | _
   }
 
 
@@ -100,7 +99,6 @@ class BuildLogicFunctionalTest extends Specification {
     "5.3.1"       | _
     "5.2"         | _
     "5.1.1"       | _
-    "5.0"         | _
   }
 
 
@@ -156,7 +154,6 @@ class BuildLogicFunctionalTest extends Specification {
     "5.3.1"       | _
     "5.2"         | _
     "5.1.1"       | _
-    "5.0"         | _
   }
 
 

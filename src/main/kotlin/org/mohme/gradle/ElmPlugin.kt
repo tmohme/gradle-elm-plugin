@@ -3,33 +3,12 @@ package org.mohme.gradle
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.create
-import java.nio.file.Paths
 
-
-const val DEFAULT_EXECUTABLE = "elm"
-const val DEFAULT_MAIN_MODULE = "Main.elm"
-const val DEFAULT_TARGET_MODULE = "elm.js"
-const val DEFAULT_TEST_EXECUTABLE = "elm-test"
 
 class ElmPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         val elm = project.extensions.create("elm", ElmPluginExtension::class, project)
-
-        elm.executable.set(Executable.Provided(DEFAULT_EXECUTABLE))
-        elm.executionDir.set(".")
-
-        elm.sourceDir.set(Paths.get("src", "elm").toFile())
-        elm.mainModuleName.set(DEFAULT_MAIN_MODULE)
-
-        elm.buildDir.set(Paths.get(project.buildDir.path, "elm").toFile())
-        elm.targetModuleName.set(DEFAULT_TARGET_MODULE)
-
-        elm.debug.set(false)
-        elm.optimize.set(false)
-
-        elm.testExecutable.set(DEFAULT_TEST_EXECUTABLE)
-        elm.testExecutionDir.set(".")
 
         project.tasks.create("elmMake", ElmMakeTask::class) {
             // configure defaults
