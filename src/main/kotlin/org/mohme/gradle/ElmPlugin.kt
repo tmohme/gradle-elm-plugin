@@ -16,7 +16,7 @@ class ElmPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         val elm = project.extensions.create("elm", ElmPluginExtension::class, project)
 
-        elm.executable.set(DEFAULT_EXECUTABLE)
+        elm.executable.set(Executable.Provided(DEFAULT_EXECUTABLE))
         elm.executionDir.set(".")
 
         elm.sourceDir.set(Paths.get("src", "elm").toFile())

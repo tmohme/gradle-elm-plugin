@@ -23,7 +23,7 @@ open class ElmMakeTask : DefaultTask() {
     private val objectFactory get() = project.objects
 
     @Input
-    val executable = objectFactory.property<String>()
+    val executable = objectFactory.property<Executable>()
 
     @Input
     val executionDir = objectFactory.property<String>()
@@ -61,7 +61,7 @@ open class ElmMakeTask : DefaultTask() {
             elmMakeCmd.add("cmd")
             elmMakeCmd.add("/c")
         }
-        elmMakeCmd.add(executable.get())
+        elmMakeCmd.add(executable.get().path.toString())
         elmMakeCmd.add("make")
         elmMakeCmd.add(Paths.get(sourceDir.get().toString(), mainModuleName.get()).toString())
         elmMakeCmd.add("--output")

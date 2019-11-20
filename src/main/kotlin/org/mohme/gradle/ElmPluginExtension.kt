@@ -1,44 +1,23 @@
 package org.mohme.gradle
 
 import org.gradle.api.Project
-import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.property
 
 open class ElmPluginExtension(project: Project) {
-    var executable: Property<String>
-    var executionDir: Property<String>
+    private val objectFactory = project.objects
 
-    var sourceDir: DirectoryProperty
-    var mainModuleName: Property<String>
+    val executable = objectFactory.property<Executable>() // TODO .convention()
+    val executionDir = objectFactory.property<String>()
 
-    var buildDir: DirectoryProperty
-    var targetModuleName: Property<String>
+    val sourceDir = objectFactory.directoryProperty()
+    val mainModuleName = objectFactory.property<String>()
 
-    var debug: Property<Boolean>
-    var optimize: Property<Boolean>
+    val buildDir = objectFactory.directoryProperty()
+    val targetModuleName = objectFactory.property<String>()
 
-    var testExecutable: Property<String>
-    var testExecutionDir: Property<String>
+    val debug = objectFactory.property<Boolean>()
+    val optimize = objectFactory.property<Boolean>()
 
-
-
-    init {
-        val objectFactory = project.objects
-
-        executable = objectFactory.property()
-        executionDir = objectFactory.property()
-
-        sourceDir = objectFactory.directoryProperty()
-        mainModuleName = objectFactory.property()
-
-        buildDir = objectFactory.directoryProperty()
-        targetModuleName = objectFactory.property()
-
-        debug = objectFactory.property()
-        optimize = objectFactory.property()
-
-        testExecutable = objectFactory.property()
-        testExecutionDir = objectFactory.property()
-    }
+    val testExecutable = objectFactory.property<String>()
+    val testExecutionDir = objectFactory.property<String>()
 }

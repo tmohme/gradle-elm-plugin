@@ -70,7 +70,7 @@ class BuildLogicFunctionalTest extends Specification {
 
   def "run elmMake successfully with default configuration (mostly)"(String gradleVersion) {
     given:
-    buildFile << minimalBuildFileContent()
+    buildFile << minimalGroovyBuildFileContent()
     elmDotJson << elmDotJsonDefaultContent
     sourceDir = testProjectDir.newFolder('src', 'elm')
     mainFile = Files.createFile(sourceDir.toPath().resolve('Main.elm')).toFile()
@@ -108,13 +108,14 @@ class BuildLogicFunctionalTest extends Specification {
     given:
     buildFile << """\
       import java.nio.file.Paths
+      import org.mohme.gradle.Executable
       
       plugins {
         id 'org.mohme.gradle.elm-plugin'
       }
       
       elmMake {
-        executable = 'elm'
+        executable = new Executable.Provided()
         executionDir = '${testProjectDir.root.canonicalPath}'
 
         sourceDir = file('src/main/elm')
@@ -163,13 +164,14 @@ class BuildLogicFunctionalTest extends Specification {
     given:
     buildFile << """\
       import java.nio.file.Paths
+      import org.mohme.gradle.Executable
       
       plugins {
         id 'org.mohme.gradle.elm-plugin'
       }
       
       elm {
-        executable = 'elm'
+        executable = new Executable.Provided()
         executionDir = '${testProjectDir.root.canonicalPath}'
 
         sourceDir = file('src/main/elm')
@@ -203,7 +205,7 @@ class BuildLogicFunctionalTest extends Specification {
 
   def "elmMake is loaded from cache"() {
     given:
-    buildFile << minimalBuildFileContent()
+    buildFile << minimalGroovyBuildFileContent()
     elmDotJson << elmDotJsonDefaultContent
     sourceDir = testProjectDir.newFolder('src', 'elm')
     mainFile = Files.createFile(sourceDir.toPath().resolve('Main.elm')).toFile()
@@ -236,7 +238,7 @@ class BuildLogicFunctionalTest extends Specification {
 
   def "logs stdout output with level 'info'"() {
     given:
-    buildFile << minimalBuildFileContent()
+    buildFile << minimalGroovyBuildFileContent()
     elmDotJson << elmDotJsonDefaultContent
     sourceDir = testProjectDir.newFolder('src', 'elm')
     mainFile = Files.createFile(sourceDir.toPath().resolve('Main.elm')).toFile()
@@ -258,7 +260,7 @@ class BuildLogicFunctionalTest extends Specification {
 
   def "logs stderr output when no log level is given on CLI"() {
     given:
-    buildFile << minimalBuildFileContent()
+    buildFile << minimalGroovyBuildFileContent()
     elmDotJson << elmDotJsonDefaultContent
     sourceDir = testProjectDir.newFolder('src', 'elm')
     mainFile = Files.createFile(sourceDir.toPath().resolve('Main.elm')).toFile()
@@ -278,7 +280,7 @@ class BuildLogicFunctionalTest extends Specification {
   }
 
 
-  def minimalBuildFileContent() {
+  def minimalGroovyBuildFileContent() {
     // use a method to delay resolution of '${testProjectDir.root.canonicalPath}' until 'testProjectDir' is defined
     return """\
       import java.nio.file.Paths
