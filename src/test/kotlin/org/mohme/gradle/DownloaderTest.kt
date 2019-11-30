@@ -105,11 +105,14 @@ internal class DownloaderTest {
     }
 
     @Test
-    fun fetch(@TempDir tempDir : File) {
+    fun fetch(@TempDir tempDir: File) {
         val targetFile = tempDir.resolve("target")
 
-        Downloader(logger).fetch(Executable.V_0_19_1().url, targetFile)
+        val path = Executable.V_0_19_1().path(logger)
 
-        expectThat(targetFile.exists()).isTrue()
+        expectThat(path.toFile()) {
+            get(File::exists).isTrue()
+            get(File::isFile).isTrue()
+        }
     }
 }

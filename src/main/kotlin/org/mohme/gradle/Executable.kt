@@ -5,18 +5,23 @@ import java.io.Serializable
 import java.net.URL
 import java.nio.file.Path
 
+// TODO should not depend on gradle
+// TODO the whole thing is a totally broken abstraction :(
 sealed class Executable : Serializable {
+    protected val githubDownloadBasePath = "https://github.com/elm/compiler/releases/download"
     abstract fun path(logger: Logger): Path
 
     @Suppress("ClassNaming")
     data class V_0_19_1(
-            val url: URL =
-                    URL("https://github.com/elm/compiler/releases/download/0.19.1/binary-for-mac-64-bit.gz")
+            private val version: String = "0.19.1",
+            private val artifactName : String = "binary-for-mac-64-bit.gz"
     ) : Executable() {
         override fun path(logger: Logger): Path {
             // TODO implement platform distinction
             // TODO implement caching
-            Downloader(logger).fetch(url, targetFile = Path.of("build", "gradle-elm", "0.19.0").toFile())
+            val url = URL("${githubDownloadBasePath}/${version}/${artifactName}")
+            Downloader(logger)
+                    .fetch(url, targetFile = Path.of("build", "gradle-elm", version, artifactName).toFile())
 
             // TODO implement unpack
 
