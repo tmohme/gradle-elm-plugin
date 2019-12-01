@@ -1,7 +1,6 @@
 package org.mohme.gradle
 
 import com.github.kittinunf.result.Result
-import org.gradle.api.logging.Logger
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -12,22 +11,21 @@ import java.nio.file.Path
 import java.util.zip.GZIPInputStream
 
 
-// TODO should not depend on gradle
 // TODO the whole thing is a totally broken abstraction :(
 sealed class Executable : Serializable {
     protected val githubDownloadBasePath = "https://github.com/elm/compiler/releases/download"
-    abstract fun path(logger: Logger, buildDir: File): Path
+    abstract fun path(logger: Logger, baseDir: File): Path
 
     @Suppress("ClassNaming")
     data class V_0_19_0(
             private val version: String = "0.19.0",
             private val artifactName: String = "binary-for-mac-64-bit.gz"
     ) : Executable() {
-        override fun path(logger:Logger, buildDir:File): Path {
+        override fun path(logger: Logger, baseDir: File): Path {
             // TODO implement platform distinction
             // TODO implement caching
             val url = URL("${githubDownloadBasePath}/${version}/${artifactName}")
-            val targetFile = buildDir
+            val targetFile = baseDir
                     .resolve("gradle-elm")
                     .resolve(version)
                     .resolve(artifactName)
@@ -50,7 +48,7 @@ sealed class Executable : Serializable {
     }
 
     data class Provided(val name: String = "elm") : Executable() {
-        override fun path(logger: Logger, buildDir: File) = Path.of(name)
+        override fun path(logger: Logger, baseDir: File) = Path.of(name)
     }
 }
 
