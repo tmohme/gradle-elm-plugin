@@ -61,7 +61,7 @@ open class ElmMakeTask : DefaultTask() {
             elmMakeCmd.add("cmd")
             elmMakeCmd.add("/c")
         }
-        elmMakeCmd.add(executable.get().path(logger).toString())
+        elmMakeCmd.add(executable.get().path(logger, project.buildDir).toString())
         elmMakeCmd.add("make")
         elmMakeCmd.add(Paths.get(sourceDir.get().toString(), mainModuleName.get()).toString())
         elmMakeCmd.add("--output")

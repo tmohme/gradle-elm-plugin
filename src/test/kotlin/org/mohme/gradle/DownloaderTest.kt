@@ -2,7 +2,7 @@ package org.mohme.gradle
 
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.logging.Logger
-import org.junit.jupiter.api.Test
+import org.gradle.internal.impldep.org.junit.Test
 import org.junit.jupiter.api.io.TempDir
 import org.slf4j.Marker
 import strikt.api.expectThat
@@ -106,13 +106,12 @@ internal class DownloaderTest {
 
     @Test
     fun fetch(@TempDir tempDir: File) {
-        val targetFile = tempDir.resolve("target")
-
-        val path = Executable.V_0_19_1().path(logger)
+        val path = Executable.V_0_19_0().path(logger, tempDir)
 
         expectThat(path.toFile()) {
             get(File::exists).isTrue()
             get(File::isFile).isTrue()
+            get(File::canExecute).isTrue()
         }
     }
 }

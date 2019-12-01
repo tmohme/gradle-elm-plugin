@@ -67,6 +67,101 @@ class BuildLogicFunctionalTest extends Specification {
   }
 
 
+  def "run elmMake successfully with provided elm executable"(String gradleVersion) {
+    given:
+    buildFile << """\
+      import org.mohme.gradle.Executable
+      
+      plugins {
+        id 'org.mohme.gradle.elm-plugin'
+      }
+      
+      elmMake {
+        executable = new Executable.Provided()
+
+        executionDir = '${testProjectDir.root.canonicalPath}'
+        sourceDir = file('src/main/elm')
+      }
+    """.stripIndent()
+
+    elmDotJson << elmDotJsonContent
+    mainFile << mainFileContent
+
+    when:
+    def result = GradleRunner.create()
+            .withGradleVersion(gradleVersion)
+            .withProjectDir(testProjectDir.root)
+            .withArguments('elmMake', '--stacktrace', '--info')
+            .withPluginClasspath()
+            .withDebug(true)
+            .build()
+
+    then:
+    result.task(":elmMake").outcome == TaskOutcome.SUCCESS
+
+    def elmJs = testProjectDir.root.path + '/build/elm/elm.js'
+    new File(elmJs).exists()
+
+
+    where:
+    gradleVersion | _
+    "6.0"         | _
+    "5.6.4"       | _
+    "5.5.1"       | _
+    "5.4.1"       | _
+    "5.3.1"       | _
+    "5.2"         | _
+    "5.1.1"       | _
+  }
+
+  def "run elmMake successfully with downloaded elm executable"(String gradleVersion) {
+    given:
+    buildFile << """\
+      import org.mohme.gradle.Executable
+      
+      plugins {
+        id 'org.mohme.gradle.elm-plugin'
+      }
+      
+      elmMake {
+        executable = new Executable.V_0_19_0()
+
+        executionDir = '${testProjectDir.root.canonicalPath}'
+        sourceDir = file('src/main/elm')
+      }
+    """.stripIndent()
+
+    elmDotJson << elmDotJsonContent
+    mainFile << mainFileContent
+
+    when:
+    def result = GradleRunner.create()
+            .withGradleVersion(gradleVersion)
+            .withProjectDir(testProjectDir.root)
+            .withArguments('elmMake', '--stacktrace', '--info')
+            .withPluginClasspath()
+            .withDebug(true)
+            .build()
+
+    then:
+    result.task(":elmMake").outcome == TaskOutcome.SUCCESS
+
+    def elmJs = testProjectDir.root.path + '/build/elm/elm.js'
+    new File(elmJs).exists()
+
+
+    where:
+    gradleVersion | _
+    "6.0"         | _
+    "5.6.4"       | _
+    "5.5.1"       | _
+    "5.4.1"       | _
+    "5.3.1"       | _
+    "5.2"         | _
+    "5.1.1"       | _
+  }
+
+
   def "run elmMake successfully with default configuration (mostly)"(String gradleVersion) {
     given:
     buildFile << minimalGroovyBuildFileContent()

@@ -35,6 +35,7 @@ gradlePlugin {
 
 dependencies {
     implementation("com.github.kittinunf.fuel:fuel:2.2.1")
+    implementation("com.github.kittinunf.result:result:2.2.0")
 
     testImplementation(gradleTestKit())
 //    testImplementation("io.mockk:mockk:1.9")
@@ -45,6 +46,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.2")
 
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.5.2")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.5.2")
 }
 
 val kotlinVersion = "1.3.50"
