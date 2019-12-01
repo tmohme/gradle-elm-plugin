@@ -61,7 +61,8 @@ open class ElmMakeTask : DefaultTask() {
             elmMakeCmd.add("cmd")
             elmMakeCmd.add("/c")
         }
-        elmMakeCmd.add(executable.get().path(DelegatingLogger(logger), project.buildDir).toString())
+        // TODO handle failure
+        elmMakeCmd.add(executable.get().path(DelegatingLogger(logger), project.buildDir).get().toString())
         elmMakeCmd.add("make")
         elmMakeCmd.add(Paths.get(sourceDir.get().toString(), mainModuleName.get()).toString())
         elmMakeCmd.add("--output")

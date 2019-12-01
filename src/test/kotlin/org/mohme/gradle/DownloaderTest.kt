@@ -14,7 +14,7 @@ internal class DownloaderTest {
         val logger = aLogger()
 
         // when
-        val path = Executable.V_0_19_0().path(logger, tempDir)
+        val path = Executable.V_0_19_0().path(logger, tempDir).get()
 
         // then
         expectThat(path.toFile()) {
