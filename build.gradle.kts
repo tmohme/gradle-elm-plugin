@@ -34,6 +34,7 @@ gradlePlugin {
 }
 
 dependencies {
+    // TODO organize version numbers
     implementation("com.github.kittinunf.fuel:fuel:2.2.1")
     implementation("com.github.kittinunf.result:result:2.2.0")
 

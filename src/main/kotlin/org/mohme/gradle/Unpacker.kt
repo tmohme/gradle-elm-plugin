@@ -9,32 +9,28 @@ import java.util.zip.GZIPInputStream
 
 fun File.isGzipped() = name.toLowerCase(Locale.US).endsWith(".gz")
 
-fun File.unGzip(): File {
-    val buffer = ByteArray(1024 * 128)
+fun File.unGzip(target: File): File {
+    val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
 
     // TODO handle different compression formats!?
-    // TODO make naming variable!?
-    val targetFile = this.resolveSibling("elm")
-
     GZIPInputStream(FileInputStream(this)).use { gzis ->
-        FileOutputStream(targetFile).use { fos ->
-
+        FileOutputStream(target).use { fos ->
             var len: Int
             while (gzis.read(buffer).also { len = it } > 0) {
                 fos.write(buffer, 0, len)
             }
-
         }
     }
 
-    return targetFile
+    return target
 }
 
 object Unpacker {
     fun unpack(packed: File): Result<File, Exception> =
             Result.of {
                 if (packed.isGzipped()) {
-                    packed.unGzip()
+                    // TODO make naming variable!?
+                    packed.unGzip(target = packed.resolveSibling("elm"))
                 } else {
                     throw IllegalArgumentException("Unable to unpack '$packed'.")
                 }
