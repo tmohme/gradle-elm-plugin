@@ -1,15 +1,17 @@
 package org.mohme.gradle
 
-import org.gradle.internal.impldep.org.junit.Test
+import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import strikt.api.expectThat
 import strikt.assertions.isTrue
 import java.io.File
 
+@Disabled("Depends on network resources . . . run manually")
 internal class DownloaderTest {
 
     @Test
-    fun fetch(@TempDir tempDir: File) {
+    fun `can actually GET executable`(@TempDir tempDir: File) {
         // given
         val logger = aLogger()
 
