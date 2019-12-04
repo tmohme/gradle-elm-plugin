@@ -1,13 +1,11 @@
 package org.mohme.gradle
 
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import strikt.api.expectThat
 import strikt.assertions.isTrue
 import java.io.File
 
-@Disabled("Depends on network resources . . . run manually")
 internal class DownloaderTest {
 
     @Test

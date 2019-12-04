@@ -40,6 +40,6 @@ sealed class Executable : Serializable {
     }
 
     data class Provided(val name: String = "elm") : Executable() {
-        override fun path(logger: Logger, baseDir: File) = Result.of<Path, Exception> { Path.of(name) }
+        override fun path(logger: Logger, baseDir: File) = Result.of<Path, Exception> { File(name).toPath() }
     }
 }

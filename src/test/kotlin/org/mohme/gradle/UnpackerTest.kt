@@ -19,7 +19,7 @@ internal class UnpackerTest {
     @Test
     fun `successfully unpacks a valid gz archive`() {
         // given
-        val sourceFile = fileFromResource("/test.gz")
+        val sourceFile = fileFromResource("/test.txt.gz")
 
         // when
         val (file, exception) = Unpacker.unpack(sourceFile)
