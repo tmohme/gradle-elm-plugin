@@ -20,16 +20,19 @@ sealed class Executable : Serializable {
             private val artifactName: String = "binary-for-mac-64-bit.gz"
     ) : Executable() {
         override fun path(logger: Logger, baseDir: File): Result<Path, Exception> {
+            // TODO extract shareable code
             // TODO implement platform distinction
-            // TODO implement caching
             val url = URL("${githubDownloadBasePath}/${version}/${artifactName}")
             val targetFile = baseDir
                     .resolve("gradle-elm")
                     .resolve(version)
                     .resolve(artifactName)
 
-            return Downloader(logger)
-                    .fetch(url, targetFile = targetFile)
+            val fileResult =
+                    if (targetFile.exists()) Result.of { targetFile }
+                    else Downloader(logger).fetch(url, targetFile)
+
+            return fileResult
                     .flatMap { downloaded -> Unpacker.unpack(downloaded) }
                     .map { unpacked -> unpacked.apply { setExecutable(true) } }
                     .map { file -> file.toPath() }
