@@ -9,7 +9,9 @@ import java.util.zip.GZIPInputStream
 
 fun File.isGzipped() = name.toLowerCase(Locale.US).endsWith(".gz")
 
-fun File.unGzip(target: File): File {
+fun File.unGzip(
+        target: File = this.resolveSibling(File(this.nameWithoutExtension))
+): File {
     val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
 
     // TODO handle different compression formats!?
@@ -29,8 +31,7 @@ object Unpacker {
     fun unpack(packed: File): Result<File, Exception> =
             Result.of {
                 if (packed.isGzipped()) {
-                    // TODO make naming variable!?
-                    packed.unGzip(target = packed.resolveSibling("elm"))
+                    packed.unGzip()
                 } else {
                     throw IllegalArgumentException("Unable to unpack '$packed'.")
                 }
