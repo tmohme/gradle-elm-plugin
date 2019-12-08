@@ -34,7 +34,7 @@ class Downloader(private val logger: Logger) {
     private fun download(url: URL, targetFile: File): File {
         // TODO handle timeouts
         val cancellableRequest = Fuel.download(url.toString())
-                .fileDestination { _, _ -> logger.debug("fileDestination='{}'", targetFile); targetFile }
+                .fileDestination { _, _ -> targetFile }
                 .progress { readBytes, totalBytes ->
                     val progress = readBytes.toFloat() / totalBytes.toFloat() * PERCENT_FACTOR
                     logger.debug("Bytes downloaded {} / {} ({} %)", targetFile, totalBytes, progress)

@@ -1,13 +1,16 @@
 [![Build Status](https://travis-ci.org/tmohme/gradle-elm-plugin.svg?branch=master)](https://travis-ci.org/tmohme/gradle-elm-plugin)
 
-# gradle-elm-plugin
+# gradle-elm-plugin 4.0.0-SNAPSHOT
 A gradle plugin for convenient use of elm.
 
-This plugin requires a working installation of the elm-platform in version **0.19**.  
+If you are looking for documentation for a different version, please go to the list of commits and browse the 
+repository at the corresponding point in the history.
+
+This plugin can be used with elm **0.19**.  
 If you want to use elm-platform **0.18**, please use version **1.0.0** of this plugin.
 
 ## Prerequisites
-Obviously you need a working `elm` installation to use this plugin.  
+The plugin can use a provided `elm` installation or download a platform-specific version on the fly. 
 When you want to use the `elmTest` task, you need a working installation of the [node-test-runner `elm-test`](https://github.com/rtfeldman/node-test-runner).
 
 ## Usage
@@ -34,33 +37,49 @@ output showing the actual call to the underlying functionality.
 ## Extension
 The plugin supports the `elm` extension with the following properties:
 
-| Name               | default                        | type    | description |
-| ------------------ | ------------------------------ | ------- | ----------- |
-| `buildDir`         | `${project.buildDir.path}/elm` | File    | The name of the directory in which we place the output. |
-| `debug`            | `true`                         | boolean | Determines whether `elm make` will run with the `--debug`-flag. | 
-| `executable`       | `elm`                          | String  | The name of the executable to use. |
-| `executionDir`     | `.`                            | String  | The name of the working directory for the execution of `elm make`. |
-| `mainModuleName`   | `Main.elm`                     | String  | The name of the main module to give to `elm make`. |
-| `optimize`         | `true`                         | boolean | Determines whether `elm make` will run with the the `--optimize`-flag. | 
-| `sourceDir`        | `src/elm`                      | File    | The name of the directory in which the main module will be searched. |
-| `targetModuleName` | `elm.js`                       | String  | The name of the output file to produce. |
-| `testExecutable`   | `elm-test`                     | String  | The name of the executable to use. |
-| `testExecutionDir` | `.`                            | String  | The name of the working directory for the execution of `elm-test`. |
+| Name               | default                        | type                        | description |
+| ------------------ | ------------------------------ | ----------------------------| ----------- |
+| `buildDir`         | `${project.buildDir.path}/elm` | File                        | The name of the directory in which we place the output. |
+| `debug`            | `true`                         | boolean                     | Determines whether `elm make` will run with the `--debug`-flag. | 
+| `executable`       | Provided                       | org.mohme.gradle.Executable | The executable to use.|
+| `executionDir`     | `.`                            | String                      | The name of the working directory for the execution of `elm make`. |
+| `mainModuleName`   | `Main.elm`                     | String                      | The name of the main module to give to `elm make`. |
+| `optimize`         | `true`                         | boolean                     | Determines whether `elm make` will run with the the `--optimize`-flag. | 
+| `sourceDir`        | `src/elm`                      | File                        | The name of the directory in which the main module will be searched. |
+| `targetModuleName` | `elm.js`                       | String                      | The name of the output file to produce. |
+| `testExecutable`   | `elm-test`                     | String                      | The name of the executable to use. |
+| `testExecutionDir` | `.`                            | String                      | The name of the working directory for the execution of `elm-test`. |
 
-Groovy example:
+### Special types
+#### org.mohme.gradle.Executable
+The property `executable` accepts values of type `org.mohme.gradle.Executable` for which there are multiple occurrences:
+* `org.mohme.gradle.Executable.Provided` - specifies that the `elm` executable is provided by a local installation and 
+  reachable via the $PATH under the name `elm`.
+* `org.mohme.gradle.Executable.Download.V_0_19_0` - specifies to download and use the elm-compiler in the corresponding 
+  version. The downloaded artifact will be store in the `./build/gradle-elm` directory for future reuse. 
+* `org.mohme.gradle.Executable.Download.V_0_19_1` - specifies to download and use the elm-compiler in the corresponding 
+  version. The downloaded artifact will be store in the `./build/gradle-elm` directory for future reuse. 
+  
+Of course you can use regular `import` statements to avoid littering your build-file with fully qualified class names.
+By using dedicated classes/objects, at least Kotlin build script users get the advantage of editor-support for
+auto-completion. Also it is impossible to specify an unsupported version for download.
+
+### Groovy example:
 ```groovy
 elm {
     sourceDir = file('src/main/elm')
+    executable = org.mohme.gradle.Executable.Provided.INSTANCE
     targetModuleName = 'main.js'
     debug = true
     optimize = false
 }
 ```
 
-Kotlin example:
+### Kotlin example:
 ```kotlin
 elm {
     sourceDir.set(project.file("src/main/elm"))
+    executable = org.mohme.gradle.Executable.Provided
     targetModuleName.set("main.js")
     debug.set(true)
     optimize.set(false)

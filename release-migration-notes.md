@@ -2,7 +2,9 @@
 
 ## 4.0.0
 * Add support for Gradle 6.0, 
-* Remove support for Gradle 4.x (because of incompatible API)
+* **Breaking change:** Remove support for Gradle 4.x because its API is incompatible with 6.x
+* **Breaking change:** Remove support for Gradle 5.0 because its API lacks required functions.
+* **Breaking change:** Property `executable` gets specified via dedicated types instead of a String.
 
 ## 3.3.0
 * Upgrade to Gradle 5.6.4.
