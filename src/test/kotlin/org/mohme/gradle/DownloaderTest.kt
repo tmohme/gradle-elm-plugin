@@ -8,13 +8,30 @@ import java.io.File
 
 internal class DownloaderTest {
 
+    // TODO use jqwik instead of duplicating
     @Test
-    fun `can actually GET executable`(@TempDir tempDir: File) {
+    fun `can actually GET v0_19_0 executable`(@TempDir tempDir: File) {
         // given
         val logger = aLogger()
 
         // when
-        val path = Executable.V_0_19_0().path(logger, tempDir).get()
+        val path = Executable.Download.V_0_19_0.path(logger, tempDir).get()
+
+        // then
+        expectThat(path.toFile()) {
+            get(File::exists).isTrue()
+            get(File::isFile).isTrue()
+            get(File::canExecute).isTrue()
+        }
+    }
+
+    @Test
+    fun `can actually GET v0_19_1 executable`(@TempDir tempDir: File) {
+        // given
+        val logger = aLogger()
+
+        // when
+        val path = Executable.Download.V_0_19_1.path(logger, tempDir).get()
 
         // then
         expectThat(path.toFile()) {

@@ -14,7 +14,6 @@ fun File.unGzip(
 ): File {
     val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
 
-    // TODO handle different compression formats!?
     GZIPInputStream(FileInputStream(this)).use { gzis ->
         FileOutputStream(target).use { fos ->
             var len: Int

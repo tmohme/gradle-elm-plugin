@@ -79,7 +79,7 @@ class BuildLogicFunctionalTest extends Specification {
       }
       
       elmMake {
-        executable = new Executable.Provided()
+        executable = Executable.Provided.INSTANCE
 
         executionDir = '${testProjectDir.root.canonicalPath}'
         sourceDir = file('src/main/elm')
@@ -128,7 +128,7 @@ class BuildLogicFunctionalTest extends Specification {
       }
       
       elmMake {
-        executable = new Executable.V_0_19_0()
+        executable = Executable.Download.V_0_19_0.INSTANCE
 
         executionDir = '${testProjectDir.root.canonicalPath}'
         sourceDir = file('src/main/elm')
@@ -216,7 +216,7 @@ class BuildLogicFunctionalTest extends Specification {
       }
       
       elmMake {
-        executable = new Executable.Provided()
+        executable = Executable.Provided.INSTANCE
         executionDir = '${testProjectDir.root.canonicalPath}'
 
         sourceDir = file('src/main/elm')
@@ -273,7 +273,7 @@ class BuildLogicFunctionalTest extends Specification {
       }
       
       elm {
-        executable = new Executable.Provided()
+        executable = Executable.Provided.INSTANCE
         executionDir = '${testProjectDir.root.canonicalPath}'
 
         sourceDir = file('src/main/elm')

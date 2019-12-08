@@ -14,7 +14,7 @@ const val CWD = "."
 open class ElmPluginExtension(project: Project) {
     private val objectFactory = project.objects
 
-    val executable = objectFactory.property<Executable>().convention(Executable.Provided())
+    val executable = objectFactory.property<Executable>().convention(Executable.Provided)
     val executionDir = objectFactory.property<String>().convention(CWD)
 
     val sourceDir =
