@@ -56,31 +56,51 @@ open class ElmMakeTask : DefaultTask() {
     @TaskAction
     fun make() {
         val elmMakeCmd = ArrayList<String>()
-        val osName = System.getProperty("os.name")
-        if (osName.startsWith("Windows")) {
-            elmMakeCmd.add("cmd")
-            elmMakeCmd.add("/c")
-        }
-        // TODO handle failure
-        elmMakeCmd.add(executable.get().path(DelegatingLogger(logger), project.buildDir).get().toString())
-        elmMakeCmd.add("make")
-        elmMakeCmd.add(Paths.get(sourceDir.get().toString(), mainModuleName.get()).toString())
-        elmMakeCmd.add("--output")
-        elmMakeCmd.add(Paths.get(buildDir.get().toString(), targetModuleName.get()).toString())
         if (debug.get() && optimize.get()) {
             throw TaskExecutionException(
                     this,
                     IllegalArgumentException("I cannot compile with 'optimize' and 'debug' at the same time.")
             )
         }
-        if (debug.get()) {
-            elmMakeCmd.add("--debug")
-        }
-        if (optimize.get()) {
-            elmMakeCmd.add("--optimize")
+
+        with(elmMakeCmd) {
+            addPlatformModification()
+            add(executablePath().toString())
+            add("make")
+            add(mainModulePath().toString())
+            add("--output")
+            add(targetModulePath().toString())
+            addOptimizeFlag()
         }
 
         elmMake(elmMakeCmd)
+    }
+
+    private fun ArrayList<String>.addPlatformModification() {
+        val osName = System.getProperty("os.name")
+        if (osName.startsWith("Windows")) {
+            add("cmd")
+            add("/c")
+        }
+    }
+
+    private fun executablePath() =
+            executable.get().path(DelegatingLogger(logger), project.buildDir).fold(
+                    success = { it },
+                    failure = { throw TaskExecutionException(this, it) }
+            )
+
+    private fun mainModulePath() = Paths.get(sourceDir.get().toString(), mainModuleName.get())
+
+    private fun targetModulePath() = Paths.get(buildDir.get().toString(), targetModuleName.get())
+
+    private fun ArrayList<String>.addOptimizeFlag() {
+        if (debug.get()) {
+            add("--debug")
+        }
+        if (optimize.get()) {
+            add("--optimize")
+        }
     }
 
     private fun elmMake(makeCmd: List<String>) {
