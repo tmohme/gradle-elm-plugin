@@ -8,6 +8,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt").version("1.1.1")
     id("net.researchgate.release") version "2.8.1"
 }
+val kotlinVersion = "1.3.50"
 
 group = "org.mohme.gradle"
 
@@ -34,23 +35,20 @@ gradlePlugin {
 }
 
 dependencies {
-    // TODO organize version numbers
-    implementation("com.github.kittinunf.fuel:fuel:2.2.1")
-    implementation("com.github.kittinunf.result:result:2.2.0")
+    implementation(Libs.fuel)
+    implementation(Libs.result)
 
     testImplementation(gradleTestKit())
-//    testImplementation("io.mockk:mockk:1.9")
-    testImplementation("io.strikt:strikt-core:0.22.3")
-    testImplementation("org.spockframework:spock-core:1.3-groovy-2.5") {
+    testImplementation(Libs.strikt)
+    testImplementation(Libs.spock_core) {
         exclude(module = "groovy-all")
     }
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.2")
+    testImplementation(Libs.junit_api)
 
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.5.2")
-    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.5.2")
+    testRuntimeOnly(Libs.junit_jupiter_engine)
+    testRuntimeOnly(Libs.junit_vintage_engine)
 }
 
-val kotlinVersion = "1.3.50"
 configurations.all {
     resolutionStrategy {
         failOnVersionConflict()
