@@ -32,8 +32,11 @@ class Downloader(private val logger: Logger) {
     }
 
     private fun download(url: URL, targetFile: File): File {
-        // TODO handle timeouts
         val cancellableRequest = Fuel.download(url.toString())
+                .apply {
+                    timeout(CONNECT_TIMEOUT_IN_MS)
+                    timeoutRead(READ_TIMEOUT_IN_MS)
+                }
                 .fileDestination { _, _ -> targetFile }
                 .progress { readBytes, totalBytes ->
                     val progress = readBytes.toFloat() / totalBytes.toFloat() * PERCENT_FACTOR
@@ -47,11 +50,17 @@ class Downloader(private val logger: Logger) {
                 }
 
         val response = cancellableRequest.join()
+        // TODO better handling of unsuccessful response (e.g. due to timeout) - at least log error
         logger.debug("response=$response")
         if (!targetFile.exists() || !targetFile.isFile) {
             throw IOException("Unable to fetch '$url' into '$targetFile'.")
         }
 
         return targetFile
+    }
+
+    companion object {
+        const val CONNECT_TIMEOUT_IN_MS = 10_000
+        const val READ_TIMEOUT_IN_MS = 30_000
     }
 }

@@ -64,6 +64,8 @@ Of course you can use regular `import` statements to avoid littering your build-
 By using dedicated classes/objects, at least Kotlin build script users get the advantage of editor-support for
 auto-completion. Also it is impossible to specify an unsupported version for download.
 
+For the download there's a connect timeout of 10s and a read timeout of 30s.
+
 ### Groovy example:
 ```groovy
 elm {
