@@ -1,16 +1,15 @@
 [![Build Status](https://travis-ci.org/tmohme/gradle-elm-plugin.svg?branch=master)](https://travis-ci.org/tmohme/gradle-elm-plugin)
 
-# gradle-elm-plugin 4.0.0-SNAPSHOT
+# gradle-elm-plugin version 4.0.0
 A gradle plugin for convenient use of elm.
 
-If you are looking for documentation for a different version, please go to the list of commits and browse the 
-repository at the corresponding point in the history.
+If you are looking for documentation for a different version, please select the corresponding branch/tag in GitHub.
 
 This plugin can be used with elm **0.19**.  
 If you want to use elm-platform **0.18**, please use version **1.0.0** of this plugin.
 
 ## Prerequisites
-The plugin can use a provided `elm` installation or download a platform-specific version on the fly. 
+The plugin can use a provided `elm` installation or download a platform-specific version on the fly.  
 When you want to use the `elmTest` task, you need a working installation of the [node-test-runner `elm-test`](https://github.com/rtfeldman/node-test-runner).
 
 ## Usage
@@ -52,9 +51,9 @@ The plugin supports the `elm` extension with the following properties:
 
 ### Special types
 #### org.mohme.gradle.Executable
-The property `executable` accepts values of type `org.mohme.gradle.Executable` for which there are multiple occurrences:
+The property `executable` accepts values of type `org.mohme.gradle.Executable` for which there are multiple instances:
 * `org.mohme.gradle.Executable.Provided` - specifies that the `elm` executable is provided by a local installation and 
-  reachable via the $PATH under the name `elm`.
+  reachable via the system's executable search path under the name `elm`.
 * `org.mohme.gradle.Executable.Download.V_0_19_0` - specifies to download and use the elm-compiler in the corresponding 
   version. The downloaded artifact will be store in the `./build/gradle-elm` directory for future reuse. 
 * `org.mohme.gradle.Executable.Download.V_0_19_1` - specifies to download and use the elm-compiler in the corresponding 

@@ -58,14 +58,12 @@ class BuildLogicFunctionalTest extends Specification {
     where:
     gradleVersion | _
     "6.0"         | _
-    /*
     "5.6.4"       | _
     "5.5.1"       | _
     "5.4.1"       | _
     "5.3.1"       | _
     "5.2"         | _
     "5.1.1"       | _
-     */
   }
 
 
@@ -108,14 +106,12 @@ class BuildLogicFunctionalTest extends Specification {
     where:
     gradleVersion | _
     "6.0"         | _
-    /*
     "5.6.4"       | _
     "5.5.1"       | _
     "5.4.1"       | _
     "5.3.1"       | _
     "5.2"         | _
     "5.1.1"       | _
-     */
   }
 
   def "run elmMake successfully with downloaded elm executable"(String gradleVersion) {
@@ -157,14 +153,12 @@ class BuildLogicFunctionalTest extends Specification {
     where:
     gradleVersion | _
     "6.0"         | _
-    /*
     "5.6.4"       | _
     "5.5.1"       | _
     "5.4.1"       | _
     "5.3.1"       | _
     "5.2"         | _
     "5.1.1"       | _
-     */
   }
 
 
@@ -194,14 +188,12 @@ class BuildLogicFunctionalTest extends Specification {
     where:
     gradleVersion | _
     "6.0"         | _
-    /*
     "5.6.4"       | _
     "5.5.1"       | _
     "5.4.1"       | _
     "5.3.1"       | _
     "5.2"         | _
     "5.1.1"       | _
-     */
   }
 
 
@@ -251,14 +243,12 @@ class BuildLogicFunctionalTest extends Specification {
     where:
     gradleVersion | _
     "6.0"         | _
-    /*
     "5.6.4"       | _
     "5.5.1"       | _
     "5.4.1"       | _
     "5.3.1"       | _
     "5.2"         | _
     "5.1.1"       | _
-     */
   }
 
 
