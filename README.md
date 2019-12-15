@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/tmohme/gradle-elm-plugin.svg?branch=master)](https://travis-ci.org/tmohme/gradle-elm-plugin)
 
-# gradle-elm-plugin version 4.0.0
+# gradle-elm-plugin version 4.0.1
 A gradle plugin for convenient use of elm.
 
 If you are looking for documentation for a different version, please select the corresponding branch/tag in GitHub.

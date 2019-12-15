@@ -1,6 +1,7 @@
 package org.mohme.gradle
 
 import com.github.kittinunf.result.Result
+import com.github.kittinunf.result.Result.Companion.error
 import com.github.kittinunf.result.Result.Companion.success
 import com.github.kittinunf.result.flatMap
 import com.github.kittinunf.result.map
@@ -10,7 +11,6 @@ import java.net.URL
 import java.nio.file.Path
 
 
-// TODO the whole thing is a totally broken abstraction :(
 sealed class Executable : Serializable {
     abstract fun path(logger: Logger, baseDir: File): Result<Path, Exception>
 
@@ -27,8 +27,8 @@ sealed class Executable : Serializable {
                         .map { artifactName -> Pair(artifactName, artifactUrl(artifactName)) }
                         .map { (artifactName, artifactUrl) -> Pair(targetFile(baseDir, artifactName), artifactUrl) }
                         .flatMap { (targetFile, url) -> download(targetFile, logger, url) }
-                        .flatMap { downloaded -> unpack(downloaded) }
-                        .map { unpacked -> unpacked.apply { setExecutable(true) } }
+                        .flatMap { downloaded -> unpack(downloaded, logger) }
+                        .map { unpacked -> unpacked.file.apply { setExecutable(true) } }
                         .map { file -> file.toPath() }
 
         private fun artifactName(platformCode: String) =
@@ -45,11 +45,18 @@ sealed class Executable : Serializable {
         }
 
         private fun download(targetFile: File, logger: Logger, url: URL) =
-                if (targetFile.exists()) success(targetFile)
-                else Downloader(logger).fetch(url, targetFile)
+                if (targetFile.exists()) {
+                    if (targetFile.isFile) {
+                        logger.debug("Skipping download because '$targetFile' already exists.")
+                        success(targetFile)
+                    } else {
+                        error(IllegalStateException("Can't download to '$targetFile' - it exists and is not a file."))
+                    }
+                } else {
+                    Downloader(logger).fetch(url, targetFile)
+                }
 
-        // TODO actually unpack only if not already done
-        private fun unpack(downloaded: File) = Unpacker.unpack(downloaded)
+        private fun unpack(downloaded: File, logger: Logger) = Unpacker(logger).unpack(downloaded)
 
         @Suppress("ClassNaming")
         object V_0_19_0 : Download("0.19.0")

@@ -1,5 +1,8 @@
 # Release and Migration notes
 
+## 4.0.1
+* Unpack downloaded elm executable only if required.
+
 ## 4.0.0
 * Add support for Gradle 6.0, 
 * **Breaking change:** Remove support for Gradle 4.x because its API is incompatible with 6.x

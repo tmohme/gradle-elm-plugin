@@ -13,7 +13,6 @@ private const val PERCENT_FACTOR = 100
 
 class Downloader(private val logger: Logger) {
 
-    // TODO do not require targetFile as input
     fun fetch(url: URL, targetFile: File) =
             Result.of<File, Exception> { createParentDir(targetFile) }
                     .map { _ -> download(url, targetFile) }
@@ -34,6 +33,7 @@ class Downloader(private val logger: Logger) {
     }
 
     private fun download(url: URL, targetFile: File): File {
+        logger.debug("Downloading '$url' to '$targetFile'.")
         var previousProgress = 0.0f
         fun isWorthReporting(progress: Float): Boolean {
             val isWorthReporting = ((progress - previousProgress) >= 1.0)
