@@ -124,7 +124,7 @@ class BuildLogicFunctionalTest extends Specification {
       }
       
       elmMake {
-        executable = Executable.Download.V_0_19_0.INSTANCE
+        executable = Executable.Download.V_0_19_1.INSTANCE
 
         executionDir = '${testProjectDir.root.canonicalPath}'
         sourceDir = file('src/main/elm')
@@ -346,7 +346,7 @@ class BuildLogicFunctionalTest extends Specification {
 
     then:
     result.task(":elmMake").outcome == TaskOutcome.SUCCESS
-    result.output.contains("Verifying dependencies...")
+    result.output.contains("Success! Compiled 1 module.")
   }
 
 
@@ -368,7 +368,7 @@ class BuildLogicFunctionalTest extends Specification {
 
     then:
     result.task(":elmMake").outcome == TaskOutcome.FAILED
-    result.output.contains("PARSE ERROR")
+    result.output.contains("-- PROBLEM IN DEFINITION --")
   }
 
 
@@ -389,6 +389,7 @@ class BuildLogicFunctionalTest extends Specification {
 
 
   def mainFileContent = """\
+      module Main exposing (main)
       import Html 
       main = Html.text "hello, world!"
     """.stripIndent()
@@ -399,7 +400,7 @@ class BuildLogicFunctionalTest extends Specification {
         "source-directories": [
             "src/main/elm"
         ],
-        "elm-version": "0.19.0",
+        "elm-version": "0.19.1",
         "dependencies": {
             "direct": {
                 "elm/core": "1.0.0",
