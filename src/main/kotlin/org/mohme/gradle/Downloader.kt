@@ -1,6 +1,8 @@
 package org.mohme.gradle
 
 import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.core.isClientError
+import com.github.kittinunf.fuel.core.isServerError
 import com.github.kittinunf.result.Result
 import com.github.kittinunf.result.map
 import java.io.File
@@ -32,6 +34,13 @@ class Downloader(private val logger: Logger) {
     }
 
     private fun download(url: URL, targetFile: File): File {
+        var previousProgress = 0.0f
+        fun isWorthReporting(progress: Float): Boolean {
+            val isWorthReporting = ((progress - previousProgress) >= 1.0)
+            if (isWorthReporting) previousProgress = progress
+            return isWorthReporting
+        }
+
         val cancellableRequest = Fuel.download(url.toString())
                 .apply {
                     timeout(CONNECT_TIMEOUT_IN_MS)
@@ -40,7 +49,9 @@ class Downloader(private val logger: Logger) {
                 .fileDestination { _, _ -> targetFile }
                 .progress { readBytes, totalBytes ->
                     val progress = readBytes.toFloat() / totalBytes.toFloat() * PERCENT_FACTOR
-                    logger.debug("Bytes downloaded {} / {} ({} %)", targetFile, totalBytes, progress)
+                    if ((readBytes == totalBytes) || isWorthReporting(progress)) {
+                        logger.debug("Bytes downloaded: {} / {} ({} %)", readBytes, totalBytes, progress)
+                    }
                 }
                 .response { result ->
                     when (result) {
@@ -50,8 +61,12 @@ class Downloader(private val logger: Logger) {
                 }
 
         val response = cancellableRequest.join()
-        // TODO better handling of unsuccessful response (e.g. due to timeout) - at least log error
-        logger.debug("response=$response")
+        if (response.isClientError || response.isServerError) {
+            logger.error("Download from '$url' failed. Response=$response")
+        } else {
+            logger.debug("Download response=$response")
+        }
+
         if (!targetFile.exists() || !targetFile.isFile) {
             throw IOException("Unable to fetch '$url' into '$targetFile'.")
         }
